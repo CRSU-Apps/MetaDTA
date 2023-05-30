@@ -1,4 +1,4 @@
-**MetaDTA v2.0**
+**MetaDTA v2.0.1**
 
 MetaDTA is an online interactive application for conducting meta-analysis of diagnostic test accuracy studies (DTA) requiring no specialist software for the user to install but leveraging established analysis routines (specifically the lme4 package in R). The tool is interactive and uses an intuitive ‘point and click’ interface and presents results in visually intuitive and appealing ways. It is hoped that this tool will assist those in conducting DTA meta-analysis who are not statistical experts, and, in turn, increase the relevance of published meta-analyses, and in the long term contribute to improved healthcare decision making as a result.
 
