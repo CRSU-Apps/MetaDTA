@@ -4022,8 +4022,14 @@ server <- function(input, output) {
     else
       X <- data()
     D <- madad(X, correction.control = "any")
-    forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
+    
+    fplot <- forest(D, type = "sens", snames = X$author,
+           xlab = "Sensitivity", main = "Forest plot of sensitivity")
+    
+  }, height = function(){
+    ifelse(nrow(data()) <=20, 400, 20*nrow(data())) # Reactive plot height based on number of studies
   })
+  
   # Produce the forest plots for specificity
   output$forestMA_spec <- renderPlot({
     if(is.null(data())){return()}
@@ -4031,6 +4037,8 @@ server <- function(input, output) {
       X <- data()
     D <- madad(X, correction.control = "any")
     forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
+  }, height = function(){
+    ifelse(nrow(data()) <=20, 400, 20*nrow(data())) # Reactive plot height based on number of studies
   })
   
   # Allow users to download the sensitivity forest plot
@@ -8865,7 +8873,10 @@ server <- function(input, output) {
     X <- adf[input$triallist, ]
     D <- madad(X, correction.control = "any")
     forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
+  }, height = function(){
+    ifelse(nrow(data()) <=20, 400, 20*nrow(data())) # Reactive plot height based on number of studies
   })
+  
   # Produce the forest plots for specificity
   output$forestSA_spec <- renderPlot({
     if(is.null(data())){return()}
@@ -8873,7 +8884,10 @@ server <- function(input, output) {
       adf <- data()
     X <- adf[input$triallist, ]
     D <- madad(X, correction.control = "any")
+  
     forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
+  }, height = function(){
+    ifelse(nrow(data()) <=20, 400, 20*nrow(data())) # Reactive plot height based on number of studies
   })
   
   # Allow users to download the sensitivity forest plot
