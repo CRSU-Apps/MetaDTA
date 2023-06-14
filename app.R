@@ -4043,7 +4043,7 @@ server <- function(input, output) {
   
   # Forest plot pixel height varies based on the number of studies
   forest_height <- reactive({
-    ifelse(nrow(data()) <=25, 420, 15*(nrow(data())-1) + 60)
+    ifelse(nrow(data()) <=20, 400, 20*(nrow(data())))
   })
   
   # Allow users to download the sensitivity forest plot
@@ -8895,6 +8895,11 @@ server <- function(input, output) {
     ifelse(length(input$triallist) <=20, 400, 20*(length(input$triallist))) # Reactive plot height based on number of studies
   })
   
+  # Sensitivity forest plot pixel height varies based on the number of studies
+  sensitivity_height <- reactive({
+    ifelse(length(input$triallist) <=20, 400, 20*(length(input$triallist)))
+  })
+  
   # Allow users to download the sensitivity forest plot
   output$download_forestSA_sens <- downloadHandler(
     # Speicfy the file name (either roc.png or roc.pdf)
@@ -8906,7 +8911,7 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest2 == "png")
-        png(file, height = forest_height())
+        png(file, height = sensitivity_height())
       else
         pdf(file)
       
@@ -8928,7 +8933,7 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest2 == "png")
-        png(file, height = forest_height())
+        png(file, height = sensitivity_height())
       else
         pdf(file)
       
