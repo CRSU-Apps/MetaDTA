@@ -3,6 +3,14 @@
 #  install.packages("BiocManager")
 #BiocManager::install(version = "3.11")
 #BiocManager::install("Rgraphviz")
+
+##########
+# Before deploying to shinyapps.io run the following lines in the console to avoid
+# failure to deploy due to BioConductor package
+# library(BiocManager)
+# options(repos = BiocManager::repositories())
+##########
+
 library(Rgraphviz)
 
 # Load packages
