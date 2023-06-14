@@ -4027,7 +4027,7 @@ server <- function(input, output) {
            xlab = "Sensitivity", main = "Forest plot of sensitivity")
     
   }, height = function(){
-    ifelse(nrow(data()) <=25, 420, 15*(nrow(data())-1) + 60) # Reactive plot height based on number of studies
+    ifelse(nrow(data()) <=20, 400, 20*(nrow(data()))) # Reactive plot height based on number of studies
   })
   
   # Produce the forest plots for specificity
@@ -4038,7 +4038,7 @@ server <- function(input, output) {
     D <- madad(X, correction.control = "any")
     forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
   }, height = function(){
-    ifelse(nrow(data()) <=25, 420, 15*(nrow(data())-1) + 60) # Reactive plot height based on number of studies
+    ifelse(nrow(data()) <=20, 400, 20*(nrow(data()))) # Reactive plot height based on number of studies
   })
   
   # Forest plot pixel height varies based on the number of studies
@@ -8879,7 +8879,7 @@ server <- function(input, output) {
     D <- madad(X, correction.control = "any")
     forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
   }, height = function(){
-    ifelse(nrow(data()) <=25, 420, 15*(nrow(data())-1) + 60) # Reactive plot height based on number of studies
+    ifelse(length(input$triallist) <=20, 400, 20*(length(input$triallist))) # Reactive plot height based on number of studies
   })
   
   # Produce the forest plots for specificity
@@ -8892,7 +8892,7 @@ server <- function(input, output) {
   
     forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
   }, height = function(){
-    ifelse(nrow(data()) <=25, 420, 15*(nrow(data())-1) + 60) # Reactive plot height based on number of studies
+    ifelse(length(input$triallist) <=20, 400, 20*(length(input$triallist))) # Reactive plot height based on number of studies
   })
   
   # Allow users to download the sensitivity forest plot
