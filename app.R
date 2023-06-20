@@ -3,6 +3,14 @@
 #  install.packages("BiocManager")
 #BiocManager::install(version = "3.11")
 #BiocManager::install("Rgraphviz")
+
+##########
+# Before deploying to shinyapps.io run the following lines in the console to avoid
+# failure to deploy due to BioConductor package
+# library(BiocManager)
+# options(repos = BiocManager::repositories())
+##########
+
 library(Rgraphviz)
 
 # Load packages
@@ -28,6 +36,8 @@ library(stats)
 library(yaml)
 library(foreach)
 library(Hmisc)
+
+source("forest_height.R") # Function to change forest plot height based on number of trials
 
 # Function to calculate sensitivity and specificity for each study
 study_level_outcomes <- function(data = NULL, subset=NULL, formula = NULL,
@@ -101,7 +111,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  
                  # Start with a home tab
                  tabPanel("Home", 
-                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.3 (30th May 2023)"),
+                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.4 (14th June 2023)"),
                           br(),
                           h4("Version 2.0 is the version as described in the paper:",
                              tags$a(href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439", "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.
@@ -143,6 +153,9 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           p("An interactive primer on diagnostic test accuracy can be found at:"),
                           tags$a(href="https://crsu.shinyapps.io/diagprimer/", "https://crsu.shinyapps.io/diagprimer/", target="_blank"),
                           br(),
+                          br(),
+                          p("Updates from v2.0.3 to v2.0.4"),
+                          p("Forest plots display correctly for analysis with larger numbers of studies"),
                           br(),
                           p("Updates from v2.0.2 to v2.0.3"),
                           p("Video tutorial from ESMARConf2023 added"),
@@ -698,7 +711,7 @@ server <- function(input, output) {
   #Download User Guide
   # Allow users the option to download the standard example dataset
   output$downloadUG <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("MetaDTA User Guide v1_0.pdf")
     },
@@ -735,7 +748,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the standard example dataset
   output$downloadData1 <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("Standard.csv")
     },
@@ -750,7 +763,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the quality assessment example dataset
   output$downloadData2 <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("QA.csv")
     },
@@ -765,7 +778,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the covariate example dataset
   output$downloadData3 <- downloadHandler(
-    # Speicfy the file name
+    # Specify the file name
     filename = function(){
       paste("Cov.csv")
     },
@@ -780,7 +793,7 @@ server <- function(input, output) {
 
   # Allow users the option to download the quality assessment and covariate example dataset
   output$downloadData4 <- downloadHandler(
-    # Speicfy the file name
+    # Specify the file name
     filename = function(){
       paste("QA_Cov.csv")
     },
@@ -985,7 +998,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the table of sens, spec for each trial
   output$downloadTable <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("table.csv")
     },
@@ -2074,7 +2087,7 @@ server <- function(input, output) {
   
   # Allow users to download the interactive SROC curve
   output$downloadROC <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("roc", input$filetype, sep=".")
     },
@@ -3501,7 +3514,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the table of statistics
   output$downloadStatTable <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("statTable.csv")
     },
@@ -3779,7 +3792,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the parameter estimates
   output$downloadParameters <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("Parameters.csv")
     },
@@ -3933,7 +3946,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the RevMan parameters
   output$downloadRevMan <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("RevMan.csv")
     },
@@ -4017,25 +4030,35 @@ server <- function(input, output) {
   )
   
   # Produce the forest plots for sensitivity
-  output$forestMA_sens <- renderPlot({
-    if(is.null(data())){return()}
-    else
-      X <- data()
-    D <- madad(X, correction.control = "any")
-    forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
+  observe({
+    output$forestMA_sens <- renderPlot({
+      if(is.null(data())){return()}
+      else
+        X <- data()
+      D <- madad(X, correction.control = "any")
+      
+      fplot <- forest(D, type = "sens", snames = X$author,
+             xlab = "Sensitivity", main = "Forest plot of sensitivity")
+      
+    }, height = calculate_forest_height_pixel(nrow(data()))
+    )
   })
+  
   # Produce the forest plots for specificity
-  output$forestMA_spec <- renderPlot({
-    if(is.null(data())){return()}
-    else
-      X <- data()
-    D <- madad(X, correction.control = "any")
-    forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
+  observe({
+    output$forestMA_spec <- renderPlot({
+      if(is.null(data())){return()}
+      else
+        X <- data()
+      D <- madad(X, correction.control = "any")
+      forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
+    }, height = calculate_forest_height_pixel(nrow(data()))
+    )
   })
   
   # Allow users to download the sensitivity forest plot
   output$download_forestMA_sens <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("Sensitivity Forest Plot", input$filetype_forest, sep=".")
     },
@@ -4044,9 +4067,9 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest == "png")
-        png(file)
+        png(file = file, height = calculate_forest_height_pixel(nrow(data())))
       else
-        pdf(file)
+        pdf(file, height = calculate_forest_height_pdf(nrow(data())))
       
       X <- data()
       D <- madad(X, correction.control = "any")
@@ -4057,7 +4080,7 @@ server <- function(input, output) {
   
   # Allow users to download the specificity forest plot
   output$download_forestMA_spec <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("Specificity Forest Plot", input$filetype_forest, sep=".")
     },
@@ -4066,9 +4089,9 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest == "png")
-        png(file)
+        png(file, height = calculate_forest_height_pixel(nrow(data())))
       else
-        pdf(file)
+        pdf(file, height = calculate_forest_height_pdf(nrow(data())))
       
       X <- data()
       D <- madad(X, correction.control = "any")
@@ -6278,7 +6301,7 @@ server <- function(input, output) {
 
   # Allow users to download the sensitivity analysis SROC curve
   output$downloadROC_sa <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("roc_sa", input$filetype2, sep=".")
     },
@@ -8343,7 +8366,7 @@ server <- function(input, output) {
 
   # Allow users the option to download the table of statistics for included trials only
   output$downloadSATable <- downloadHandler(
-    # Speicfy the file name
+    # Specify the file name
     filename = function(){
       paste("SATable.csv")
     },
@@ -8618,7 +8641,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the parameter estimates
   output$downloadParameters2 <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("Parameters_SA.csv")
     },
@@ -8773,7 +8796,7 @@ server <- function(input, output) {
   
   # Allow users the option to download the RevMan parameters
   output$downloadRevMan2 <- downloadHandler(
-    # Speicfy the file name 
+    # Specify the file name 
     filename = function(){
       paste("RevMan_SA.csv")
     },
@@ -8858,27 +8881,35 @@ server <- function(input, output) {
   )
   
   # Produce the forest plots for sensitivity
-  output$forestSA_sens <- renderPlot({
-    if(is.null(data())){return()}
-    else
-      adf <- data()
-    X <- adf[input$triallist, ]
-    D <- madad(X, correction.control = "any")
-    forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
+  observe ({
+    output$forestSA_sens <- renderPlot({
+      if(is.null(data())){return()}
+      else
+        adf <- data()
+      X <- adf[input$triallist, ]
+      D <- madad(X, correction.control = "any")
+      forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
+    }, height = calculate_forest_height_pixel(length(input$triallist))
+    )
   })
+  
   # Produce the forest plots for specificity
-  output$forestSA_spec <- renderPlot({
-    if(is.null(data())){return()}
-    else
-      adf <- data()
-    X <- adf[input$triallist, ]
-    D <- madad(X, correction.control = "any")
-    forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
+  observe({
+    output$forestSA_spec <- renderPlot({
+      if(is.null(data())){return()}
+      else
+        adf <- data()
+      X <- adf[input$triallist, ]
+      D <- madad(X, correction.control = "any")
+    
+      forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
+    }, height = calculate_forest_height_pixel(length(input$triallist))
+    )
   })
   
   # Allow users to download the sensitivity forest plot
   output$download_forestSA_sens <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("Sensitivity Forest Plot_SA", input$filetype_forest2, sep=".")
     },
@@ -8887,21 +8918,20 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest2 == "png")
-        png(file)
+        png(file, height = calculate_forest_height_pixel(length(input$triallist)))
       else
-        pdf(file)
+        pdf(file, height = calculate_forest_height_pdf(length(input$triallist)))
       
       adf <- data()
       X <- adf[input$triallist, ]
       D <- madad(X, correction.control = "any")
       forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
-      
       dev.off()
     })
   
   # Allow users to download the specificity forest plot
   output$download_forestSA_spec <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("Specificity Forest Plot_SA", input$filetype_forest2, sep=".")
     },
@@ -8910,11 +8940,12 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest2 == "png")
-        png(file)
+        png(file, height = calculate_forest_height_pixel(length(input$triallist)))
       else
-        pdf(file)
+        pdf(file, height = calculate_forest_height_pdf(length(input$triallist)))
       
-      X <- data()
+      adf <- data()
+      X <- adf[input$triallist, ]
       D <- madad(X, correction.control = "any")
       forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
       
@@ -9299,7 +9330,7 @@ server <- function(input, output) {
   
   # Allow users to download the meta-analysis tree diagram
   output$downloadPrev_MA <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("MA_tree", input$filetype3, sep=".")
     },
@@ -9489,7 +9520,7 @@ server <- function(input, output) {
   
   # Allow users to download the meta-analysis tree diagram
   output$downloadPrev_SA <- downloadHandler(
-    # Speicfy the file name (either roc.png or roc.pdf)
+    # Specify the file name (either roc.png or roc.pdf)
     filename = function(){
       paste("SA_tree", input$filetype3, sep=".")
     },
