@@ -4040,7 +4040,7 @@ server <- function(input, output) {
       fplot <- forest(D, type = "sens", snames = X$author,
              xlab = "Sensitivity", main = "Forest plot of sensitivity")
       
-    }, height = forest_height(nrow(data()), "pixel")
+    }, height = calculate_forest_height_pixel(nrow(data()))
     )
   })
   
@@ -4052,7 +4052,8 @@ server <- function(input, output) {
         X <- data()
       D <- madad(X, correction.control = "any")
       forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
-    }, height = forest_height(nrow(data()), "pixel"))
+    }, height = calculate_forest_height_pixel(nrow(data()))
+    )
   })
   
   # Allow users to download the sensitivity forest plot
@@ -4066,9 +4067,9 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest == "png")
-        png(file = file, height = forest_height(nrow(data()), "pixel"))
+        png(file = file, height = calculate_forest_height_pixel(nrow(data())))
       else
-        pdf(file, height = forest_height(nrow(data()), "inch"))
+        pdf(file, height = calculate_forest_height_pdf(nrow(data())))
       
       X <- data()
       D <- madad(X, correction.control = "any")
@@ -4088,9 +4089,9 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest == "png")
-        png(file, height = forest_height(nrow(data()), "pixel"))
+        png(file, height = calculate_forest_height_pixel(nrow(data())))
       else
-        pdf(file, height = forest_height(nrow(data()), "inch"))
+        pdf(file, height = calculate_forest_height_pdf(nrow(data())))
       
       X <- data()
       D <- madad(X, correction.control = "any")
@@ -8888,7 +8889,7 @@ server <- function(input, output) {
       X <- adf[input$triallist, ]
       D <- madad(X, correction.control = "any")
       forest(D, type = "sens", snames = X$author, xlab = "Sensitivity", main = "Forest plot of sensitivity")
-    }, height = forest_height(length(input$triallist), "pixel")
+    }, height = calculate_forest_height_pixel(length(input$triallist))
     )
   })
   
@@ -8902,7 +8903,7 @@ server <- function(input, output) {
       D <- madad(X, correction.control = "any")
     
       forest(D, type = "spec", snames = X$author, xlab = "Specificity", main = "Forest plot of specificity")
-    }, height = forest_height(length(input$triallist), "pixel")
+    }, height = calculate_forest_height_pixel(length(input$triallist))
     )
   })
   
@@ -8917,9 +8918,9 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest2 == "png")
-        png(file, height = forest_height(length(input$triallist), "pixel"))
+        png(file, height = calculate_forest_height_pixel(length(input$triallist)))
       else
-        pdf(file, height = forest_height(length(input$triallist), "inch"))
+        pdf(file, height = calculate_forest_height_pdf(length(input$triallist)))
       
       adf <- data()
       X <- adf[input$triallist, ]
@@ -8939,9 +8940,9 @@ server <- function(input, output) {
       # create the plot
       # close the device
       if(input$filetype_forest2 == "png")
-        png(file, height = forest_height(length(input$triallist), "pixel"))
+        png(file, height = calculate_forest_height_pixel(length(input$triallist)))
       else
-        pdf(file, height = forest_height(length(input$triallist), "inch"))
+        pdf(file, height = calculate_forest_height_pdf(length(input$triallist)))
       
       adf <- data()
       X <- adf[input$triallist, ]
