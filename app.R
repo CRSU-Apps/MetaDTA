@@ -111,7 +111,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  
                  # Start with a home tab
                  tabPanel("Home", 
-                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.4 (14th June 2023)"),
+                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.4 (20th June 2023)"),
                           br(),
                           h4("Version 2.0 is the version as described in the paper:",
                              tags$a(href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439", "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.
