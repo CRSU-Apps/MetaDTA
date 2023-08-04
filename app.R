@@ -101,6 +101,15 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                   
                  #Set up google analytics 
                  header = singleton(tags$head(includeScript("google_analytics.js"))),
+                 
+                 tags$head(
+                   includeHTML("www/favicon/favicon.html"),
+                   tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+                   tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
+                   tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.0.5"),
+                   tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+                   tags$meta(property="og:image", content="roc_curve.png")
+                 ),
           
                 
                  #########################
