@@ -100,17 +100,18 @@ FNimg<-readPNG('./www/FN.png')
 ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                   
                  #Set up google analytics 
-                 header = singleton(tags$head(includeScript("google_analytics.js"))),
-                 
-                 tags$head(
-                   includeHTML("www/favicon/favicon.html"),
-                   tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
-                   tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
-                   tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.0.5"),
-                   tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
-                   tags$meta(property="og:image", content="roc_curve.png")
+                 header = singleton(
+                   tags$head(
+                     includeScript("google_analytics.js"),
+                     includeHTML("www/favicon/favicon.html"),
+                     tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+                     tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
+                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.0.5"),
+                     tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+                     tags$meta(property="og:image", content="roc_curve.png")
+                   )
                  ),
-          
+                 
                 
                  #########################
                  ### Tab 1 - Home page ###
@@ -132,13 +133,13 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           h4("If you use MetaDTA please cite these papers."),
                           br(),
                           h3(tags$a(href="https://crsu.shinyapps.io/MetaBayesDTA/",
-                                    "MetaBayesDTA (BETA v1.0) is now available!", style="color:#14DBA8")),
+                                    "MetaBayesDTA (BETA) is now available!", style="color:#14DBA8")),
                           h5("MetaBayesDTA is an extended, Bayesian version of MetaDTA, which allows users to conduct meta-analysis of test accuracy, with or without assuming a gold standard. Due to its user-friendliness and broad array of features, MetaBayesDTA should appeal to a wide variety of applied researchers, including those who do not have the specific expertise required 
                              to fit such models using statistical software. Furthermore, MetaBayesDTA has many features not available in other apps. For instance, for the bivariate model, one can conduct subgroup analysis and univariate meta-regression. Meanwhile, for the model which does not assume a perfect gold standard, the app can partially account for the fact that different 
                              studies in a meta-analysis often use different reference tests using meta-regression.",
                              tags$br(),
                              tags$br(),
-                             "Please note that the current release is a Beta version and does not yet have a manual. Please send questions and any feedback - including bug reports and suggestions for new features - to Enzo Cerullo (enzo.cerullo@bath.edu).",
+                             "Please note that the current release is a Beta version and does not yet have a manual. Please send questions and any feedback - including bug reports and suggestions for new features - to apps@crsu.org.uk",
                              style="border-style: groove; border-color: #14DBA8; padding: 20px"),
                           br(),
                           fluidRow(column(5, img(height=600, width=600, src="roc_curve.png")),
