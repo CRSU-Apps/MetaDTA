@@ -178,7 +178,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                             tags$p("The Complex Reviews Support Unit is funded by the National Institute for Health Research (NIHR) (project number 14/178/29).
                             Development of this app is also funded by the NIHR Applied Research Collaboration East Midlands (ARC EM) and the Leicester NIHR Biomedical Research Centre (BRC).
                             The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care."),
-                            tags$p("Please click ", tags$a(href="https://www.gla.ac.uk/research/az/evidencesynthesis/", "here ", target="_blank"), "for more information about the UK NIHR Complex Reviews Support Unit (CRSU).")
+                            tags$p("Please click ", tags$a(href="https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/#d.en.955026", "here ", target="_blank"), "for more information about the UK NIHR Complex Reviews Support Unit (CRSU).")
                             
                           ),
                           br(),
