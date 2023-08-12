@@ -100,8 +100,18 @@ FNimg<-readPNG('./www/FN.png')
 ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                   
                  #Set up google analytics 
-                 header = singleton(tags$head(includeScript("google_analytics.js"))),
-          
+                 header = singleton(
+                   tags$head(
+                     includeScript("google_analytics.js"),
+                     includeHTML("www/favicon/favicon.html"),
+                     tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+                     tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
+                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.0.5"),
+                     tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+                     tags$meta(property="og:image", content="https://raw.githubusercontent.com/CRSU-Apps/MetaDTA/main/www/roc_curve.png")
+                   )
+                 ),
+                 
                 
                  #########################
                  ### Tab 1 - Home page ###
@@ -111,7 +121,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  
                  # Start with a home tab
                  tabPanel("Home", 
-                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.4 (20th June 2023)"),
+                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.5 (August 2023)"),
                           br(),
                           h4("Version 2.0 is the version as described in the paper:",
                              tags$a(href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439", "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.
@@ -123,13 +133,13 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           h4("If you use MetaDTA please cite these papers."),
                           br(),
                           h3(tags$a(href="https://crsu.shinyapps.io/MetaBayesDTA/",
-                                    "MetaBayesDTA (BETA v1.0) is now available!", style="color:#14DBA8")),
+                                    "MetaBayesDTA (BETA) is now available!", style="color:#14DBA8")),
                           h5("MetaBayesDTA is an extended, Bayesian version of MetaDTA, which allows users to conduct meta-analysis of test accuracy, with or without assuming a gold standard. Due to its user-friendliness and broad array of features, MetaBayesDTA should appeal to a wide variety of applied researchers, including those who do not have the specific expertise required 
                              to fit such models using statistical software. Furthermore, MetaBayesDTA has many features not available in other apps. For instance, for the bivariate model, one can conduct subgroup analysis and univariate meta-regression. Meanwhile, for the model which does not assume a perfect gold standard, the app can partially account for the fact that different 
                              studies in a meta-analysis often use different reference tests using meta-regression.",
                              tags$br(),
                              tags$br(),
-                             "Please note that the current release is a Beta version and does not yet have a manual. Please send questions and any feedback - including bug reports and suggestions for new features - to Enzo Cerullo (enzo.cerullo@bath.edu).",
+                             "Please note that the current release is a Beta version and does not yet have a manual. Please send questions and any feedback - including bug reports and suggestions for new features - to apps@crsu.org.uk",
                              style="border-style: groove; border-color: #14DBA8; padding: 20px"),
                           br(),
                           fluidRow(column(5, img(height=600, width=600, src="roc_curve.png")),
@@ -138,7 +148,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                                           HTML('<iframe width="840" height="472.5" src="https://www.youtube.com/embed/wCcbU9mKIbE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'))),
                           br(),
                           h4("Suzanne Freeman, Clareece Nevill, Amit Patel, Nicola Cooper, Terry Quinn, Alex Sutton"),
-                          p("For feedback/questions about this app please contact Alex Sutton at ajs22@leicester.ac.uk"),
+                          p("For feedback/questions about this app please contact apps@crsu.org.uk"),
                           p("App powered by Rshiny with statistical analyses performed using the package lme4:"),
                           tags$a(href="https://CRAN.R-project.org/package=lme4", "https://CRAN.R-project.org/package=lme4", target="_blank"),
                           br(),
@@ -154,77 +164,22 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           tags$a(href="https://crsu.shinyapps.io/diagprimer/", "https://crsu.shinyapps.io/diagprimer/", target="_blank"),
                           br(),
                           br(),
-                          p("Updates from v2.0.3 to v2.0.4"),
-                          p("Forest plots display correctly for analysis with larger numbers of studies"),
+                          p(tags$b("Latest update:")),
+                          p(tags$b("Patch v2.0.5 - August 2023")),
+                          p("Changes to home page including new contact email and funding statement"),
+                          p("Click", 
+                            tags$a(href="https://github.com/CRSU-Apps/MetaDTA/wiki/Changelog", "here", target="_blank"), 
+                            "to view a full update history of MetaDTA"),
                           br(),
-                          p("Updates from v2.0.2 to v2.0.3"),
-                          p("Video tutorial from ESMARConf2023 added"),
                           br(),
-                          p("Updates from v2.0.1 to v2.0.2"),
-                          p("Advertisement of MetaBayesDTA"),
-                          br(),
-                          p("Updates from v2.0 to v2.0.1:"),
-                          p("Addition of GitHub link to home page"),
-                          br(),
-                          p("Updates from v1.46 to v2.0:"),
-                          p("Addition of second citation for MetaDTA"),
-                          p("Increased number of decimal places on 'Parameters for RevMan' tab"),
-                          p("Renamed 'ROC curve' tab to 'SROC plot'"),
-                          p("Default options on 'SROC plot' tab updated"),
-                          p("Calculation of confidence intervals for individual studies updated to exact Binomial confidence intervals"),
-                          p("Minor updates to descriptive text"),
-                          br(),
-                          p("Updates from v1.45 to v1.46:"),
-                          p("Update to confidence intervals for diagnostic odds ratio, positive likelihood ratio and negative likelihood ratio. The confidence intervals are now log-transformed to ensure they do not go negative. This is in line with other software such as metandi in Stata. "),
-                          br(),
-                          p("Updates from v1.44 to v1.45:"),
-                          p("Addition of citation"),
-                          p("Correction of spelling mistakes"),
-                          br(),
-                          p("Updates from v1.43 to v1.44:"),
-                          p("Addition of User Guide"),
-                          br(),
-                          p("Updates from v1.42 to v1.43:"),
-                          p("Change to figure legend for sensitivity analysis ROC curve"),
-                          br(),
-                          p("Updates from v1.41 to v1.42:"),
-                          p("Change to figure legend for confidence region"),
-                          br(),
-                          p("Updates from v1.4 to v1.41:"),
-                          p("Correction of calculations for confidence and predictive regions"),
-                          br(),
-                          p("Updates from v1.3 to v1.4:"),
-                          p("Addition of 'Study level outcomes', 'Parameter Estimates' and 'Parameters for RevMan' tabs to the
-                            'Sensitivity Analysis' page"),
-                          p("Changed the example datasets"),
-                          p("Updated 'References' to include the new example dataset, a link to the QUADAS-2 tool and links to all
-                            packages used to develop the app"),
-                          p("Addition of various notes to help improve usability of the app"),
-                          p("Correction of spelling mistakes"),
-                          p("Implementation of Google analytics"),
-                          br(),
-                          p("Updates from v1.2 to v1.3:"),
-                          p("Addition of covariate options"),
-                          p("Addition of forest plots"),
-                          p("Addition of presenting percentage study weights"),
-                          p("Addition of 'Prevalence' page"),
-                          br(),
-                          p("Updates from v1.1 to 1.2:"),
-                          p("Addition of quality assessment options"),
-                          p("Addition of 'Parameter Estimates' and 'Parameters for RevMan' tabs to Meta-Analysis page"),
-                          br(),
-                          p("Updates from v1.0 to v1.1:"),
-                          p("Package for conducting statistical analyses changed from mada to lme4"),
-                          p("Correction of calculations for confidence and predictive regions"),
                           wellPanel(
-                            fluidRow( 
-                              column(3, img(src='CRSUlogo.jpg', width=220, height=110)),
-                              column(9, tags$div(class="header", checked=NA,
-                                                 tags$p("For more information about the Complex Reviews Support Unit (CRSU)"),
-                                                 tags$a(href="http://www.nihrcrsu.org", "please click here.", target="_blank")
-                              )
-                              )
-                            )
+                            img(src='CRSULogo.png', width = "100%"),
+                            tags$strong("Funding and Support Acknowledgement:"),
+                            tags$p("The Complex Reviews Support Unit is funded by the National Institute for Health Research (NIHR) (project number 14/178/29).
+                            Development of this app is also funded by the NIHR Applied Research Collaboration East Midlands (ARC EM) and the Leicester NIHR Biomedical Research Centre (BRC).
+                            The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care."),
+                            tags$p("Please click ", tags$a(href="https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/#d.en.955026", "here ", target="_blank"), "for more information about the UK NIHR Complex Reviews Support Unit (CRSU).")
+                            
                           ),
                           br(),
                           p("THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
