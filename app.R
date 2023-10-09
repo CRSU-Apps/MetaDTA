@@ -203,7 +203,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  tabPanel("Load Data",
                           sidebarLayout(
                             sidebarPanel(
-                              fileInput(inputId="data", label="Please select a file", buttonLabel="Select", placeholder="No file selected"),
+                              fileInput(inputId="data", label="Please select a file", buttonLabel="Select", placeholder="No file selected", accept = c(".csv", ".xlsx")),
                               helpText("Default maximum file size is 5MB"),
                               tags$hr(),
                               h4(helpText(tags$strong("File options"))),
