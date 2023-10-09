@@ -268,7 +268,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                                            assessment data is not included in the file the covariates should be entered starting at the", tags$strong("seventh"), "column. If quality assessment
                                            data is included in the file the covariate data should be entered starting at the", tags$strong("fourteenth"), "column. Multiple covariates can be entered."),
                                          br(),
-                                         p("Note: Excel files should be saved in csv format and the separator option 'comma' selected for upload."),
+                                         p("Both Excel (.xlsx) and Comma Seperated Value (.csv) files are accepted."),
                                          p("The default dataset, pre-loaded on the 'Data for Analysis' tab will be used for analysis if no file is 
                                             selected. The 'Data for Analysis' tab will automatically update once a file is successfully loaded."),
                                          p("The default datasets can be downloaded using the buttons in the sidebar and used as templates to enter your own data."),
