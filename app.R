@@ -102,7 +102,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  #Set up google analytics 
                  header = singleton(
                    tags$head(
-                     includeScript("google_analytics.js"),
+                     google_analytics_header_ui(id = "analytics"),
                      includeHTML("www/favicon/favicon.html"),
                      tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
                      tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
@@ -584,19 +584,9 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
 
 #################################################################################################################
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   
-  showModal(modalDialog(
-    title = "Important message",
-    easyClose = FALSE,
-    p(tags$strong("In accordance with Data Protection legislation, we would like to inform you of the following before you use our website:
-                  "), "We collect your usage data within the MetaDTA app to perform analytics of usage and improve our app. By clicking",
-      tags$i(tags$u("I consent")), "below, you consent to the use of data by us through Google Analytics. 
-      For details of policy, please check 'Privacy notice' tab within the app, and ",tags$a(href="https://policies.google.com/privacy?hl=en", "Google Privacy & Terms.",target="_blank") ), 
-    br(),
-    modalButton("I consent"),
-    footer = NULL
-  ))
+  google_analytics_header_server(id = "analytics", google_analytics_id = "366282079")
   
   # First line doesn't work when working from home
   # auditC <- read.csv("./Data/auditc.csv")
