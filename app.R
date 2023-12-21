@@ -579,6 +579,11 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           p(a("yaml", href = "https://CRAN.R-project.org/package=https://CRAN.R-project.org/package=yaml", target="_blank"))
                           
                       ),
+                 
+                 tabPanel(id="privacy", "Privacy notice",
+                          tags$iframe(style="height:700px; width:100%; scrolling=yes", 
+                                      src="gdpr.pdf")
+                 )
           )
 
 #################################################################################################################
