@@ -13,8 +13,9 @@ message: >-
 type: software
 authors:
   - family-names: Freeman
-    given-names: Suzanne
+    given-names: Suzanne C
     affiliation: University of Leicester
+    orcid: 'https://orcid.org/0000-0001-8045-4405'
   - family-names: Nevill
     given-names: Clareece R
     affiliation: University of Leicester
@@ -37,7 +38,7 @@ abstract: >-
   MetaDTA is an online interactive application for conducting meta-analysis of 
   diagnostic test accuracy studies (DTA) requiring no specialist software for 
   the user to install but leveraging established analysis routines 
-  (specifically the lme4 package in R).
+  (specifically the the bivariate binomial model of Chu & Cole implemented using lme4 package in R).
 keywords:
   - Diagnostic Test Accuracy
   - DTA
