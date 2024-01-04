@@ -586,20 +586,13 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
 
 server <- function(input, output, session) {
   
-  google_analytics_header_server(id = "analytics", google_analytics_id = "366282079")
-  
-  # First line doesn't work when working from home
-  # auditC <- read.csv("./Data/auditc.csv")
-  # csf42 <- read.csv("./Data/csf42.csv") 
-  # auditC_MC <- read.csv("./Data/auditc_MC.csv")
-  # csf42_MC <- read.csv("./Data/csf42_MC.csv") 
+  google_analytics_header_server(id = "analytics", google_analytics_id = "UA-135597033-2")
   
   Standard <- read.csv("./Data/Standard.csv")
   QA <- read.csv("./Data/QA.csv") 
   Cov <- read.csv("./Data/Cov.csv")
   QA_Cov <- read.csv("./Data/QA_Cov.csv")
-  # auditC <- read.csv("Z:/My Documents/RShiny/DTA MA/Data/auditc.csv")
-  
+
   # Default data
   defaultData <- reactive({
     if('2' %in% input$default){
