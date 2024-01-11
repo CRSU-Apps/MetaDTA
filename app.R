@@ -204,7 +204,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           sidebarLayout(
                             sidebarPanel(
                               fileInput(inputId="data", label="Please select a file", buttonLabel="Select", placeholder="No file selected", accept = c(".csv", ".xlsx")),
-                              helpText("Default maximum file size is 5MB"),
+                              helpText("Default maximum file size is 5MB. Both Excel (.xlsx) and Comma Seperated Value (.csv) files are accepted."),
                               tags$hr(),
                               h4(helpText(tags$strong("File options"))),
                               checkboxInput(inputId = "header", label = "First row as column headings", value = TRUE),
@@ -268,7 +268,6 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                                            assessment data is not included in the file the covariates should be entered starting at the", tags$strong("seventh"), "column. If quality assessment
                                            data is included in the file the covariate data should be entered starting at the", tags$strong("fourteenth"), "column. Multiple covariates can be entered."),
                                          br(),
-                                         p("Both Excel (.xlsx) and Comma Seperated Value (.csv) files are accepted."),
                                          p("The default dataset, pre-loaded on the 'Data for Analysis' tab will be used for analysis if no file is 
                                             selected. The 'Data for Analysis' tab will automatically update once a file is successfully loaded."),
                                          p("The default datasets can be downloaded using the buttons in the sidebar and used as templates to enter your own data."),
