@@ -1,8 +1,8 @@
 # Rgraphviz package not available on CRAN so add package from BioConductor
-#if (!requireNamespace("BiocManager", quietly = TRUE))
-#  install.packages("BiocManager")
-#BiocManager::install(version = "3.11")
-#BiocManager::install("Rgraphviz")
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# BiocManager::install(version = "3.16")
+# BiocManager::install("Rgraphviz")
 
 ##########
 # Before deploying to shinyapps.io run the following lines in the console to avoid
@@ -36,6 +36,7 @@ library(stats)
 library(yaml)
 library(foreach)
 library(Hmisc)
+library(rio)
 
 source("forest_height.R") # Function to change forest plot height based on number of trials
 
@@ -106,7 +107,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                      includeHTML("www/favicon/favicon.html"),
                      tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
                      tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
-                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.0.5"),
+                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.1.0"),
                      tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
                      tags$meta(property="og:image", content="https://raw.githubusercontent.com/CRSU-Apps/MetaDTA/main/www/roc_curve.png")
                    )
@@ -121,7 +122,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  
                  # Start with a home tab
                  tabPanel("Home", 
-                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.0.5 (August 2023)"),
+                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.0 (January 2024)"),
                           br(),
                           h4("Version 2.0 is the version as described in the paper:",
                              tags$a(href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439", "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.
@@ -165,8 +166,8 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           br(),
                           br(),
                           p(tags$b("Latest update:")),
-                          p(tags$b("Patch v2.0.5 - August 2023")),
-                          p("Changes to home page including new contact email and funding statement"),
+                          p(tags$b("v2.1.0 - January 2024")),
+                          p("Uploading data made easier - excel files can be uploaded and non-standard characters are accepted."),
                           p("Click", 
                             tags$a(href="https://github.com/CRSU-Apps/MetaDTA/wiki/Changelog", "here", target="_blank"), 
                             "to view a full update history of MetaDTA"),
@@ -202,13 +203,11 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  tabPanel("Load Data",
                           sidebarLayout(
                             sidebarPanel(
-                              fileInput(inputId="data", label="Please select a file", buttonLabel="Select", placeholder="No file selected"),
-                              helpText("Default maximum file size is 5MB"),
+                              fileInput(inputId="data", label="Please select a file", buttonLabel="Select", placeholder="No file selected", accept = c(".csv", ".xlsx")),
+                              helpText("Default maximum file size is 5MB. Both Excel (.xlsx) and Comma Seperated Value (.csv) files are accepted."),
                               tags$hr(),
                               h4(helpText(tags$strong("File options"))),
                               checkboxInput(inputId = "header", label = "First row as column headings", value = TRUE),
-                              br(),
-                              radioButtons(inputId = "sep", label="File Delimiter", choices=c(Comma=",", Semicolon=";", Tab="\t", Space= " "), selected=","),
                               br(),
                               radioButtons(inputId = "default", label = h4(helpText(tags$strong("Select example dataset"))),
                                            choices = list("Standard" = 1, "With Quality Assessment" = 2, "With Covariates" = 3, " With Quality assessment and Covariates" = 4), selected = 1),
@@ -269,7 +268,6 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                                            assessment data is not included in the file the covariates should be entered starting at the", tags$strong("seventh"), "column. If quality assessment
                                            data is included in the file the covariate data should be entered starting at the", tags$strong("fourteenth"), "column. Multiple covariates can be entered."),
                                          br(),
-                                         p("Note: Excel files should be saved in csv format and the separator option 'comma' selected for upload."),
                                          p("The default dataset, pre-loaded on the 'Data for Analysis' tab will be used for analysis if no file is 
                                             selected. The 'Data for Analysis' tab will automatically update once a file is successfully loaded."),
                                          p("The default datasets can be downloaded using the buttons in the sidebar and used as templates to enter your own data."),
@@ -633,7 +631,8 @@ server <- function(input, output, session) {
       }
     }
     else
-      a <- read.table(file = file1$datapath, sep = input$sep, header = input$header, stringsAsFactors = FALSE)
+      a <- rio::import(file1$datapath, header = input$header, stringsAsFactors = FALSE)
+      #a <- read.table(file = file1$datapath, sep = input$sep, header = input$header, stringsAsFactors = FALSE)
   })
   
   ##########################
