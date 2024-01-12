@@ -1,0 +1,57 @@
+cff-version: 1.2.0
+title: MetaDTA
+message: >-
+  If you use this app please cite it as: Freeman SC, Kerby CR, Patel A, 
+  Cooper NJ, Quinn T, Sutton AJ. Development of an interactive web-based tool 
+  to conduct and interrogate meta-analysis of diagnostic test accuracy 
+  studies: MetaDTA. BMC Medical Research Methodology 2019; 19: 81.
+  If you use the summary receiver operating charcateristic plots please also 
+  cite: Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to 
+  summary receiver operating charcateristic plots to facilitate the analysis 
+  and reporting of meta-analysis of diagnostic test accuracy data. Research 
+  Synthesis Methods 2021; 12: 34.
+type: software
+authors:
+  - family-names: Freeman
+    given-names: Suzanne C
+    affiliation: University of Leicester
+    orcid: 'https://orcid.org/0000-0001-8045-4405'
+  - family-names: Nevill
+    given-names: Clareece R
+    affiliation: University of Leicester
+    orcid: 'https://orcid.org/0000-0001-8305-2516'
+  - family-names: Patel
+    given-names: Amit
+    affiliation: University of Leicester
+  - family-names: Field
+    given-names: Ryan
+    affiliation: University of Glasgow
+    orcid: 'https://orcid.org/0000-0002-4424-9890'
+  - family-names: Bradbury
+    given-names: Naomi
+    affiliation: University of Leicester
+    orcid: 'https://orcid.org/0000-0002-8934-6301'
+  - family-names: Quinn
+    given-names: Terry
+    affiliation: University of Glasgow
+  - family-names: Cooper
+    given-names: Nicola J
+    affiliation: University of Leicester
+    orcid: 'https://orcid.org/0000-0002-4486-2791'
+  - family-names: Sutton
+    given-names: Alex J
+    affiliation: University of Leicester
+repository-code: 'https://github.com/CRSU-Apps/MetaDTA/'
+abstract: >-
+  MetaDTA is an online interactive application for conducting meta-analysis of 
+  diagnostic test accuracy studies (DTA) requiring no specialist software for 
+  the user to install but leveraging established analysis routines 
+  (specifically the the bivariate binomial model of Chu & Cole implemented using lme4 package in R).
+keywords:
+  - Diagnostic Test Accuracy
+  - DTA
+  - MetaDTA
+  - RShiny
+license: GPL-3.0-or-later
+version: 2.1.0
+date-released: '2023-12-07'
