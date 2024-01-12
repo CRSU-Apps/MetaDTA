@@ -23,6 +23,14 @@ authors:
   - family-names: Patel
     given-names: Amit
     affiliation: University of Leicester
+  - family-names: Field
+    given-names: Ryan
+    affiliation: University of Glasgow
+    orcid: 'https://orcid.org/0000-0002-4424-9890'
+  - family-names: Bradbury
+    given-names: Naomi
+    affiliation: University of Leicester
+    orcid: 'https://orcid.org/0000-0002-8934-6301'
   - family-names: Quinn
     given-names: Terry
     affiliation: University of Glasgow
