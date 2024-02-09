@@ -51,9 +51,7 @@ google_analytics_header_server <- function(id, google_analytics_id) {
         set_cookie(
           cookie_name = "analytics",
           cookie_value = TRUE,
-          expiration = 365,
-          secure_only = TRUE,
-          same_site = "none"
+          expiration = 365
         )
       }
     )
@@ -65,9 +63,7 @@ google_analytics_header_server <- function(id, google_analytics_id) {
         set_cookie(
           cookie_name = "analytics",
           cookie_value = FALSE,
-          expiration = 365,
-          secure_only = TRUE,
-          same_site = "none"
+          expiration = 365
         )
       }
     )
