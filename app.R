@@ -584,7 +584,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
 
 server <- function(input, output, session) {
   
-  google_analytics_header_server(id = "analytics", google_analytics_id = "UA-135597033-2")
+  google_analytics_header_server(id = "analytics", app_name = "MetaDTA", google_analytics_id = "UA-135597033-2")
   
   Standard <- read.csv("./Data/Standard.csv")
   QA <- read.csv("./Data/QA.csv") 
