@@ -107,7 +107,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                      includeHTML("www/favicon/favicon.html"),
                      tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
                      tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
-                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.1.0"),
+                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.1.1"),
                      tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
                      tags$meta(property="og:image", content="https://raw.githubusercontent.com/CRSU-Apps/MetaDTA/main/www/roc_curve.png")
                    )
@@ -122,7 +122,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                  
                  # Start with a home tab
                  tabPanel("Home", 
-                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.0 (January 2024)"),
+                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.1 (February 2024)"),
                           br(),
                           h4("Version 2.0 is the version as described in the paper:",
                              tags$a(href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439", "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.
@@ -134,13 +134,11 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           h4("If you use MetaDTA please cite these papers."),
                           br(),
                           h3(tags$a(href="https://crsu.shinyapps.io/MetaBayesDTA/",
-                                    "MetaBayesDTA (BETA) is now available!", style="color:#14DBA8")),
+                                    "MetaBayesDTA is now available!", style="color:#14DBA8")),
                           h5("MetaBayesDTA is an extended, Bayesian version of MetaDTA, which allows users to conduct meta-analysis of test accuracy, with or without assuming a gold standard. Due to its user-friendliness and broad array of features, MetaBayesDTA should appeal to a wide variety of applied researchers, including those who do not have the specific expertise required 
                              to fit such models using statistical software. Furthermore, MetaBayesDTA has many features not available in other apps. For instance, for the bivariate model, one can conduct subgroup analysis and univariate meta-regression. Meanwhile, for the model which does not assume a perfect gold standard, the app can partially account for the fact that different 
                              studies in a meta-analysis often use different reference tests using meta-regression.",
                              tags$br(),
-                             tags$br(),
-                             "Please note that the current release is a Beta version and does not yet have a manual. Please send questions and any feedback - including bug reports and suggestions for new features - to apps@crsu.org.uk",
                              style="border-style: groove; border-color: #14DBA8; padding: 20px"),
                           br(),
                           fluidRow(column(5, img(height=600, width=600, src="roc_curve.png")),
@@ -166,6 +164,8 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           br(),
                           br(),
                           p(tags$b("Latest update:")),
+                          p(tags$b("v2.1.1 - February 2024")),
+                          p("Updated funding statement and logo"),
                           p(tags$b("v2.1.0 - January 2024")),
                           p("Uploading data made easier - excel files can be uploaded and non-standard characters are accepted."),
                           p("Click", 
@@ -174,13 +174,23 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           br(),
                           br(),
                           wellPanel(
-                            img(src='CRSULogo.png', width = "100%"),
-                            tags$strong("Funding and Support Acknowledgement:"),
-                            tags$p("The Complex Reviews Support Unit is funded by the National Institute for Health Research (NIHR) (project number 14/178/29).
-                            Development of this app is also funded by the NIHR Applied Research Collaboration East Midlands (ARC EM) and the Leicester NIHR Biomedical Research Centre (BRC).
-                            The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care."),
-                            tags$p("Please click ", tags$a(href="https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/#d.en.955026", "here ", target="_blank"), "for more information about the UK NIHR Complex Reviews Support Unit (CRSU).")
-                            
+                            div(style = "display: inline;",
+                                img(src = 'funded-by-nihr-logo.png', width = "55%")
+                                ),
+                            div(style = "display: inline;",
+                                img(src = 'CRSU_logo.png', width = "40%")
+                                ),
+                            div(tags$strong("Funding and Support Acknowledgement:"),
+                                tags$p("MetaDTA is part of the Complex Reviews Synthesis Unit (CRSU) suite of evidence synthesis apps.
+                                       The development of these apps is currently funded (majority) and overseen by the Evidence Synthesis Group @ CRSU (NIHR153934).
+                                       Further details of other funders and support, current and past, can be found ",
+                                       tags$a(href = "https://github.com/CRSU-Apps/.github/wiki/Detailed-Funding-Statement", "on our GitHub page"),
+                                       ". The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care.",
+                                       target = "_blank"),
+                                tags$p("More information about the UK NIHR Complex Reviews Synthesis Unit (CRSU) can be found ",
+                                       tags$a(href = "https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/", "on our website.", target = "_blank"),
+                              )
+                            )
                           ),
                           br(),
                           p("THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
@@ -584,7 +594,7 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
 
 server <- function(input, output, session) {
   
-  google_analytics_header_server(id = "analytics", google_analytics_id = "UA-135597033-2")
+  google_analytics_header_server(id = "analytics", app_name = "MetaDTA", google_analytics_id = "UA-135597033-2")
   
   Standard <- read.csv("./Data/Standard.csv")
   QA <- read.csv("./Data/QA.csv") 
