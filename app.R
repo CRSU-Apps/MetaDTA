@@ -174,13 +174,23 @@ ui <- navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
                           br(),
                           br(),
                           wellPanel(
-                            img(src='CRSULogo.png', width = "100%"),
-                            tags$strong("Funding and Support Acknowledgement:"),
-                            tags$p("The Complex Reviews Support Unit is funded by the National Institute for Health Research (NIHR) (project number 14/178/29).
-                            Development of this app is also funded by the NIHR Applied Research Collaboration East Midlands (ARC EM) and the Leicester NIHR Biomedical Research Centre (BRC).
-                            The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care."),
-                            tags$p("Please click ", tags$a(href="https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/#d.en.955026", "here ", target="_blank"), "for more information about the UK NIHR Complex Reviews Support Unit (CRSU).")
-                            
+                            div(style = "display: inline;",
+                                img(src = 'funded-by-nihr-logo.png', width = "55%")
+                                ),
+                            div(style = "display: inline;",
+                                img(src = 'CRSU_logo.png', width = "40%")
+                                ),
+                            div(tags$strong("Funding and Support Acknowledgement:"),
+                                tags$p("MetaDTA is part of the Complex Reviews Synthesis Unit (CRSU) suite of evidence synthesis apps.
+                                       The development of these apps is currently funded (majority) and overseen by the Evidence Synthesis Group @ CRSU (NIHR153934).
+                                       Further details of other funders and support, current and past, can be found ",
+                                       tags$a(href = "https://github.com/CRSU-Apps/.github/wiki/Detailed-Funding-Statement", "on our GitHub page"),
+                                       ". The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care.",
+                                       target = "_blank"),
+                                tags$p("More information about the UK NIHR Complex Reviews Synthesis Unit (CRSU) can be found ",
+                                       tags$a(href = "https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/", "on our website.", target = "_blank"),
+                              )
+                            )
                           ),
                           br(),
                           p("THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
