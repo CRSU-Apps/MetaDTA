@@ -8928,4 +8928,5 @@ function(input, output, session) {
       
       })
   
+  ReferencesPageServer(id = "references")
 }
