@@ -9,219 +9,30 @@ FNimg<-readPNG('./www/FN.png')
 #################################################################################################################
 
 # Set up user interface to be a series of tabs using navbarPage
-navbarPage(title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
-                  
-                 #Set up google analytics 
-                 header = singleton(
-                   tags$head(
-                     google_analytics_header_ui(id = "analytics"),
-                     includeHTML("www/favicon/favicon.html"),
-                     tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
-                     tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
-                     tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.1.1"),
-                     tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
-                     tags$meta(property="og:image", content="https://raw.githubusercontent.com/CRSU-Apps/MetaDTA/main/www/roc_curve.png")
-                   )
-                 ),
-                 
-                
-                 #########################
-                 ### Tab 1 - Home page ###
-                 #########################
-                 
-    
-                 
-                 # Start with a home tab
-                 tabPanel("Home", 
-                          h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.1 (February 2024)"),
-                          br(),
-                          h4("Version 2.0 is the version as described in the paper:",
-                             tags$a(href="https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439", "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.
-                                 ")),
-                          h4("This builds on the previous version as described in the paper:",
-                             tags$a(href="https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-019-0724-x", "Freeman SC, Kerby CR, Patel A, Cooper NJ, Quinn T, Sutton AJ. Development of an interactive web-based tool to conduct and interrogate meta-analysis of diagnostic test accuracy studies: MetaDTA. BMC Medical Research Methodology 2019; 19: 81
-                                 "),
-                             "which can be accessed at", tags$a(href="https://crsu.shinyapps.io/dta_ma_v1/", "MetaDTA version 1.27.")), 
-                          h4("If you use MetaDTA please cite these papers."),
-                          br(),
-                          h3(tags$a(href="https://crsu.shinyapps.io/MetaBayesDTA/",
-                                    "MetaBayesDTA is now available!", style="color:#14DBA8")),
-                          h5("MetaBayesDTA is an extended, Bayesian version of MetaDTA, which allows users to conduct meta-analysis of test accuracy, with or without assuming a gold standard. Due to its user-friendliness and broad array of features, MetaBayesDTA should appeal to a wide variety of applied researchers, including those who do not have the specific expertise required 
-                             to fit such models using statistical software. Furthermore, MetaBayesDTA has many features not available in other apps. For instance, for the bivariate model, one can conduct subgroup analysis and univariate meta-regression. Meanwhile, for the model which does not assume a perfect gold standard, the app can partially account for the fact that different 
-                             studies in a meta-analysis often use different reference tests using meta-regression.",
-                             tags$br(),
-                             style="border-style: groove; border-color: #14DBA8; padding: 20px"),
-                          br(),
-                          fluidRow(column(5, img(height=600, width=600, src="roc_curve.png")),
-                                   column(6, offset=1, align='center', 
-                                          h4("MetaDTA 20-minute tutorial as part of ESMARConf2023"),
-                                          HTML('<iframe width="840" height="472.5" src="https://www.youtube.com/embed/wCcbU9mKIbE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'))),
-                          br(),
-                          h4("Suzanne Freeman, Clareece Nevill, Amit Patel, Nicola Cooper, Terry Quinn, Alex Sutton"),
-                          p("For feedback/questions about this app please contact apps@crsu.org.uk"),
-                          p("App powered by Rshiny with statistical analyses performed using the package lme4:"),
-                          tags$a(href="https://CRAN.R-project.org/package=lme4", "https://CRAN.R-project.org/package=lme4", target="_blank"),
-                          br(),
-                          p("Codes for this app are available on GitHub:",
-                            tags$a(href="https://github.com/CRSU-Apps/MetaDTA", "https://github.com/CRSU-Apps/MetaDTA"),
-                          ),
-                          br(),
-                          p("Download a copy of the MetaDTA User Guide here:"),
-                          downloadButton("downloadUG", "Download User Guide"),
-                          br(),
-                          br(),
-                          p("An interactive primer on diagnostic test accuracy can be found at:"),
-                          tags$a(href="https://crsu.shinyapps.io/diagprimer/", "https://crsu.shinyapps.io/diagprimer/", target="_blank"),
-                          br(),
-                          br(),
-                          p(tags$b("Latest update:")),
-                          p(tags$b("v2.1.1 - February 2024")),
-                          p("Updated funding statement and logo"),
-                          p(tags$b("v2.1.0 - January 2024")),
-                          p("Uploading data made easier - excel files can be uploaded and non-standard characters are accepted."),
-                          p("Click", 
-                            tags$a(href="https://github.com/CRSU-Apps/MetaDTA/wiki/Changelog", "here", target="_blank"), 
-                            "to view a full update history of MetaDTA"),
-                          br(),
-                          br(),
-                          wellPanel(
-                            div(style = "display: inline;",
-                                img(src = 'funded-by-nihr-logo.png', width = "55%")
-                                ),
-                            div(style = "display: inline;",
-                                img(src = 'CRSU_logo.png', width = "40%")
-                                ),
-                            div(tags$strong("Funding and Support Acknowledgement:"),
-                                tags$p("MetaDTA is part of the Complex Reviews Synthesis Unit (CRSU) suite of evidence synthesis apps.
-                                       The development of these apps is currently funded (majority) and overseen by the Evidence Synthesis Group @ CRSU (NIHR153934).
-                                       Further details of other funders and support, current and past, can be found ",
-                                       tags$a(href = "https://github.com/CRSU-Apps/.github/wiki/Detailed-Funding-Statement", "on our GitHub page"),
-                                       ". The views expressed are those of the author(s) and not necessarily those of the NIHR or the Department of Health and Social Care.",
-                                       target = "_blank"),
-                                tags$p("More information about the UK NIHR Complex Reviews Synthesis Unit (CRSU) can be found ",
-                                       tags$a(href = "https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/", "on our website.", target = "_blank"),
-                              )
-                            )
-                          ),
-                          br(),
-                          p("THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
-                            BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-                            NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
-                            DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-                            OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.")
-                          ),
-                 
-                 
-                 
-                 
-                 #########################
-                 ### Tab 2 - Load data ###
-                 #########################
-                 
-                 # Within the load data tab let users select a file to upload, the upload happens in a sidebarPanel on
-                 # the left and the mainPanel will show the data once file uploaded. Code to show data is in the server 
-                 # section below
-                 tabPanel("Load Data",
-                          sidebarLayout(
-                            sidebarPanel(
-                              fileInput(inputId="data", label="Please select a file", buttonLabel="Select", placeholder="No file selected", accept = c(".csv", ".xlsx")),
-                              helpText("Default maximum file size is 5MB. Both Excel (.xlsx) and Comma Seperated Value (.csv) files are accepted."),
-                              tags$hr(),
-                              h4(helpText(tags$strong("File options"))),
-                              checkboxInput(inputId = "header", label = "First row as column headings", value = TRUE),
-                              br(),
-                              radioButtons(inputId = "default", label = h4(helpText(tags$strong("Select example dataset"))),
-                                           choices = list("Standard" = 1, "With Quality Assessment" = 2, "With Covariates" = 3, " With Quality assessment and Covariates" = 4), selected = 1),
-                              br(),
-                              h4(helpText(tags$strong("Download example datasets"))),
-                              downloadButton("downloadData1", "Standard Example"),
-                              br(),
-                              downloadButton("downloadData2", "Quality Assessment Example"),
-                              br(),
-                              downloadButton("downloadData3", "Covariate Example"),
-                              br(),
-                              downloadButton("downloadData4", "Quality Assessment and Covariate Example")
-                            ),
-                            mainPanel(
-                              tabsetPanel(
-                                tabPanel("File Upload", 
-                                         h3("Please select a file to upload"),
-                                         br(),
-                                         p("The file should contain at least six columns. Labelling of columns is case sensitive."),
-                                         p("The", tags$strong("first"), "column should be labelled", tags$strong("author"), "and contain the name of 
-                                           the study author. The author name must be unique for each study."),
-                                         p("The", tags$strong("second"), "column should be labelled", tags$strong("year"), "and contain the year of 
-                                           publication."),
-                                         p("The", tags$strong("third"), "column should be labelled", tags$strong("TP"), "and contain the number of 
-                                           patients with a true positive test result."),
-                                         p("The", tags$strong("fourth"), "column should be labelled", tags$strong("FN"), "and contain the number of 
-                                           patients with a false negative test result."),
-                                         p("The", tags$strong("fifth"), "column should be labelled", tags$strong("FP"), "and contain the number of 
-                                           patients with a false positive test result."),
-                                         p("The", tags$strong("sixth"), "column should be labelled", tags$strong("TN"), "and contain the number of 
-                                           patients with a true negative test result."),
-                                         br(),
-                                         h4("Including quality assessment data (optional)"),
-                                         p("To allow the quality assessment results from the QUADAS-2 tool to be incorporated into the plots an additional seven columns are required."),
-                                         p("The", tags$strong("seventh"), "column should be labelled", tags$strong("rob_PS"), ", representing the 
-                                           risk of bias in terms of the patient selection."),
-                                         p("The", tags$strong("eighth"), "column should be labelled", tags$strong("rob_IT"), ", representing the 
-                                           risk of bias in terms of the index test."),
-                                         p("The", tags$strong("ninth"), "column should be labelled", tags$strong("rob_RS"), ", representing the 
-                                           risk of bias in terms of the reference standard."),
-                                         p("The", tags$strong("tenth"), "column should be labelled", tags$strong("rob_FT"), ", representing the 
-                                           risk of bias in terms of the flow and timing."),
-                                         p("The", tags$strong("eleventh"), "column should be labelled", tags$strong("ac_PS"), ", representing the 
-                                           applicability concerns in terms of the patient selection."),
-                                         p("The", tags$strong("twelfth"), "column should be labelled", tags$strong("ac_IT"), ", representing the 
-                                           applicability concerns in terms of the index test."),
-                                         p("The", tags$strong("thirteenth"), "column should be labelled", tags$strong("ac_RS"), ", representing the 
-                                           applicability concerns in terms of the reference standard."),
-                                         p("These columns should contain the numbers", tags$strong("1, 2 or 3"), "which represent", tags$strong("low, high or unclear"),
-                                           "risk of bias/applicability concerncs respectively."),
-                                         br(),
-                                         p("For information about the QUADAS-2 tool and how to use it please visit:"),
-                                         tags$a(href="https://www.bristol.ac.uk/population-health-sciences/projects/quadas/quadas-2/", "https://www.bristol.ac.uk/population-health-sciences/projects/quadas/quadas-2/", target="_blank"),
-                                         br(),
-                                         br(),
-                                         h4("Including covariates (optional)"), 
-                                         p("If any covariates are to be added to the file they should be included as the last columns in the file. If quality 
-                                           assessment data is not included in the file the covariates should be entered starting at the", tags$strong("seventh"), "column. If quality assessment
-                                           data is included in the file the covariate data should be entered starting at the", tags$strong("fourteenth"), "column. Multiple covariates can be entered."),
-                                         br(),
-                                         p("The default dataset, pre-loaded on the 'Data for Analysis' tab will be used for analysis if no file is 
-                                            selected. The 'Data for Analysis' tab will automatically update once a file is successfully loaded."),
-                                         p("The default datasets can be downloaded using the buttons in the sidebar and used as templates to enter your own data."),
-                                         #p("In the case of zero's in the dataset a continuity correction is used to allow the calculation of confidence 
-                                         #   intervals for individual studies which can then be displayed on the SROC curve. No continuity corrections are used 
-                                         #   for the meta-analysis."),
-                                br(),
-                                h4("Sensitivity analysis"),
-                                p("To ensure the correct studies are excluded from sensitivity analyses please ensure that study data rows are ordered 
-                                  by the 'author' column alphabetically from A to Z prior to uploading to MetaDTA (Excel can do this easily).")),
-                    tabPanel("Example datasets",
-                                         br(),
-                                         p("The default dataset uses data from a systematic review investigating the accuracy of an informant-based questionnaire, for detection of all cause
-                                           dementia in adults. The dataset consists of thirteen studies assessing the use of the IQCODE (Informant Questionnaire
-                                           on Cognitive Decline in the Elderly) tool for identifying adults with dementia within a secondary care setting."),
-                                         p("The IQCODE tool contains a number of questions which are scored on a five point scale. The IQCODE tool has a number of 
-                                           different variants, depending on how many questions are asked. The questions are based on the performance of everyday
-                                           tasks related to cognitive function. These are then rated on a scale of 1-5. The final score is an average score for each
-                                           question. The IQCODE tool is only a screening tool and does not offer a definitive diagnosis of dementia."),
-                                         p("Under the 'Select example dataset' option there are four different datasets to choose from. The default is the 'Standard' dataset,
-                                           which includes the author and year of each study along with the true positives (TP), false positives (FP), false negatives (FN) and 
-                                           true negatives (TN). The other options add data onto this 'Standard' dataset and highlight how datasets with quality assessment scores and/or
-                                           covariates should be displayed."),
-                                         p("With this dataset there are three different covariates. The first being the country in which each individual study was conducted.
-                                           The second is the threshold used in each individual study. In this case if an individuals final score was higher than the threshold the individual
-                                           was classified as having dementia and would require further diagnosis. The final covariate is labelled as 'IQCODE' and indicates 
-                                           which variant of the tool was used in each individual study. The variants are identified by the number of questions used in the 
-                                           questionnaire. There are three different variants the 16-item, 26-item and 32-item.")
-                                         ),
-                    tabPanel("Data for Analysis", uiOutput("tb"))
-                                         )
-                                         )
-                                         )),
+navbarPage(
+  title = "MetaDTA: Diagnostic Test Accuracy Meta-analysis",
+  
+  #Set up google analytics 
+  header = singleton(
+    tags$head(
+      google_analytics_header_ui(id = "analytics"),
+      includeHTML("www/favicon/favicon.html"),
+      tags$meta(name="description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+      tags$meta(name="keywords", content="MetaDTA, DTA, Diagnostic, Test, Accuracy, Meta, Analysis, App"),
+      tags$meta(property="og:title", content="MetaDTA: Diagnostic Test Accuracy Meta-analysis: V2.1.1"),
+      tags$meta(property="og:description", content="An online interactive application for conducting meta-analysis of diagnostic test accuracy studies"),
+      tags$meta(property="og:image", content="https://raw.githubusercontent.com/CRSU-Apps/MetaDTA/main/www/roc_curve.png")
+    )
+  ),
+  
+  tabPanel(
+    title = "Home",
+    HomePageUi(id = "home")
+  ),
+  tabPanel(
+    title = "Load Data",
+    DataPageUi(id = "data")
+  ),
                  
                  #############################
                  ### Tab 3 - Meta-analysis ###

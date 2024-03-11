@@ -3,54 +3,9 @@ function(input, output, session) {
   
   google_analytics_header_server(id = "analytics", app_name = "MetaDTA", google_analytics_id = "UA-135597033-2")
   
-  Standard <- read.csv("./Data/Standard.csv")
-  QA <- read.csv("./Data/QA.csv") 
-  Cov <- read.csv("./Data/Cov.csv")
-  QA_Cov <- read.csv("./Data/QA_Cov.csv")
-
-  # Default data
-  defaultData <- reactive({
-    if('2' %in% input$default){
-      return(QA)
-    }
-    if('3' %in% input$default){
-      return(Cov)
-    }
-    if('4' %in% input$default){
-      return(QA_Cov)
-    }
-    else{
-      return(Standard) 
-    }
-  })
+  HomePageServer(id = "home")
   
-  ##########################
-  ### Make data reactive ###
-  ##########################
-  
-  # Make the data file that was uploaded reactive by giving it the name file1
-  # now I can use file1 to refer to the different parts of the data file
-  # Put data into a data frame so it can be used in analysis
-  data <- reactive({ 
-    file1 <- input$data
-    if(is.null(file1)){
-      if('2' %in% input$default){
-        return(QA)
-      }
-      if('3' %in% input$default){
-        return(Cov)
-      }
-      if('4' %in% input$default){
-        return(QA_Cov)
-      }
-      else{
-        return(Standard)
-      }
-    }
-    else
-      a <- rio::import(file1$datapath, header = input$header, stringsAsFactors = FALSE)
-      #a <- read.table(file = file1$datapath, sep = input$sep, header = input$header, stringsAsFactors = FALSE)
-  })
+  data <- DataPageServer(id = "data")
   
   ##########################
   ### Create the outputs ###
@@ -69,89 +24,6 @@ function(input, output, session) {
       # create the plot
       # close the device
       file.copy("www/MetaDTA User Guide v1_0.pdf", file)
-    }
-  )
-  
-  
-  
-  #####################
-  ### Load data tab ###
-  #####################
-  
-  # Create a table which displays the raw data just uploaded by the user
-  output$rawtable <- renderTable({
-    if(is.null(data())){return()}
-    data()
-  })
-  
-  # In the "Load data" tab (created in the UI section) we divide the main panel into mutlipe tabs and add the content
-  # we've just created
-  # When there is no data loaded display the instructions for how the data should be formatted
-  # Once data is oaded display the raw data
-  output$tb <- renderUI({
-    #if(is.null(data())){return()}
-    if(is.null(data())){return("Please select a file to upload.")}
-    else
-      tableOutput("rawtable")
-  })
-  
-  # Allow users the option to download the standard example dataset
-  output$downloadData1 <- downloadHandler(
-    # Specify the file name 
-    filename = function(){
-      paste("Standard.csv")
-    },
-    content = function(file){
-      # open the device
-      # create the plot
-      # close the device
-      Standard
-      write.table(Standard, file, sep=",", row.names=FALSE)
-    }
-  )
-  
-  # Allow users the option to download the quality assessment example dataset
-  output$downloadData2 <- downloadHandler(
-    # Specify the file name 
-    filename = function(){
-      paste("QA.csv")
-    },
-    content = function(file){
-      # open the device
-      # create the plot
-      # close the device
-      QA
-      write.table(QA, file, sep=",", row.names=FALSE)
-    }
-  )
-  
-  # Allow users the option to download the covariate example dataset
-  output$downloadData3 <- downloadHandler(
-    # Specify the file name
-    filename = function(){
-      paste("Cov.csv")
-    },
-    content = function(file){
-      # open the device
-      # create the plot
-      # close the device
-      Cov
-      write.table(Cov, file, sep=",", row.names=FALSE)
-    }
-  )
-
-  # Allow users the option to download the quality assessment and covariate example dataset
-  output$downloadData4 <- downloadHandler(
-    # Specify the file name
-    filename = function(){
-      paste("QA_Cov.csv")
-    },
-    content = function(file){
-      # open the device
-      # create the plot
-      # close the device
-      QA_Cov
-      write.table(QA_Cov, file, sep=",", row.names=FALSE)
     }
   )
   
