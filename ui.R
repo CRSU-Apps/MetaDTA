@@ -28,97 +28,13 @@ navbarPage(
     title = "Meta-Analysis",
     AnalysisPageUi(id = "analysis")
   ),
-                 
-                 ####################################
-                 ### Tab 4 - Sensitivity analysis ###
-                 ####################################
-                 
-                 # Set up a fourth tab for conducting sensitivity analyses
-                 tabPanel("Sensitivity Analysis", h1("Sensitivity Analysis"),
-                          sidebarLayout(
-                            sidebarPanel(
-                              uiOutput("SA_input"),
-                              actionButton(inputId = "SA_reset", label = "Reset all inputs")
-                            ),
-                            mainPanel(
-                              tabsetPanel(
-                                tabPanel("Study-level Outcomes",
-                                         br(), 
-                                         DT::dataTableOutput("table2"),
-                                         downloadButton("downloadTable2", "Download Table"),
-                                         br(),
-                                         br(),
-                                         h5("Note: This table only includes studies selected in the sidebar."),
-                                         p("N is  the total number of individuals in each study ( N = TP + FN + FP + TN )."),
-                                         p("Sens is the sensitivity, which is the probability of a positive test result given that 
-                                           the patient has the disease ( Sens = TP / [TP + FN] )."),
-                                         p("Spec is the specificity, which is the probability of a negative test result given that
-                                           the patient does not have the disease ( Spec = TN / [TN + FP] )."), 
-                                         p("Weight_Sens is the precentage study weight of sensitvitiy, calculated using methods by Burke et al."),
-                                         p("Weight_Spec is the percentage study weight of sensitivity, calculated using methods by Burke et al."),
-                                         br()
-                                         ),
-                                tabPanel("SROC plot", 
-                                         h5("Note: At least two studies must be selected for inclusion to avoid an error 
-                                            message"),
-                                         br(),
-                                         textInput("title_sa", label = h4("Plot title"), value = "Random Effects Meta-Analysis", 
-                                                   width='500px'),
-                                         uiOutput(outputId="sensplot"),
-                                         br(),
-                                         radioButtons("filetype2", label="Select plot format", choices=list("png", "PDF")),
-                                         downloadButton("downloadROC_sa", "Download Plot"),
-                                         br(),
-                                         br(),
-                                         h5("Click the middle of the data points for individual study summaries (an error message may occur if not
-                                            selecting the middle of the pie chart when displaying risk of bias or acceptability concerns)"),
-                                         textOutput("clickinfo_ma2"),
-                                         conditionalPanel(condition = "input.plot_click_ma2 != null", plotOutput("piechart2"))
-                                         ),
-                                tabPanel("Statistics", 
-                                         h4("All studies"), 
-                                         tableOutput("orig_statTable"),
-                                         br(),
-                                         h4("Selected studies only"), tableOutput("sa_statTable"),#)
-                                         downloadButton("downloadSATable", "Download Table")
-                                         ),
-                                tabPanel("Parameter Estimates",
-                                         h5("Below are the parameter estimates for the bivariate normal distribution for mean sensitivity and 
-                                            specificty (on the logit scale). Estimates here are taken from the senstivity analysis model which 
-                                            only includes studies selected in the sidebar. Users may find these useful for further modelling 
-                                            e.g. inclusion of test accuracy in a decision modelling framework."),
-                                         br(),
-                                         img(src="decision_modelling_distribution.png", height=100, width=400),
-                                         br(),
-                                         h5("where:"),
-                                         tableOutput("DecisionModel2"),
-                                         downloadButton("downloadParameters2", "Download Table")
-                                         ),
-                                tabPanel("Parameters for RevMan",
-                                         h5("Below are the parameter values required by Cochrane's RevMan software to 
-                                            construct plots in the ROC space for users who wish to include the analysis results 
-                                            as part of a Cochrane review."),
-                                         tableOutput("revman2"),
-                                         downloadButton("downloadRevMan2", "Download Table")),
-                                tabPanel("Forest Plots",
-                                         fluidRow(
-                                           splitLayout(cellWidths = c("50%", "50%"), plotOutput("forestSA_sens"),plotOutput("forestSA_spec"))
-                                         ),
-                                         radioButtons("filetype_forest2", label="Select plot format", choices=list("png", "PDF")),
-                                         downloadButton("download_forestSA_sens", "Download Sensitivity Forest Plot"),
-                                         downloadButton("download_forestSA_spec", "Download Specificity Forest Plot"),
-                                         br(),
-                                         br(),
-                                         p("Note: These plots only include studies selected in the sidebar.")
-                                )
-                              )
-                          )
-                         )
-                    ),
-                 
- tabPanel(
-   title = "Prevalence",
-   PrevalencePageUi(id = "prevalence")
+  tabPanel(
+    title = "Sensitivity Analysis",
+    SensitivityAnalysisPageUi(id = "sensitivity")
+  ),
+  tabPanel(
+    title = "Prevalence",
+    PrevalencePageUi(id = "prevalence")
   ),
   tabPanel(
     title = "References",

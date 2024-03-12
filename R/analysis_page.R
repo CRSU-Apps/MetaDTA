@@ -172,7 +172,7 @@ AnalysisPageServer <- function(id, data) {
             "95% Confidence region" = 2,
             "95% Predictive region" = 3
           ),
-          selected = list(1, 2, 3)
+          selected = c(1, 2, 3)
         ),
         checkboxGroupInput(
           inputId = ns("cicheck"),
@@ -199,7 +199,7 @@ AnalysisPageServer <- function(id, data) {
             "Diagnostic Odds Ratio" = 6,
             "Likelihood Ratios" = 7
           ),
-          selected = list(1, 2, 3)
+          selected = c(1, 2, 3)
         )
       )
     })  
@@ -2538,6 +2538,8 @@ AnalysisPageServer <- function(id, data) {
         pie(weight, labels_both, main = "Scores from each element of the QUADAS-2 tool",
             col=ifelse(clickselect_pc$score == 1, "green", ifelse(clickselect_pc$score == 2, "red", "lavenderblush3")))
         legend(0.9,0.1, c("Low", "High", "Unclear"), cex =0.7, fill = c("green", "red", "lavenderblush3"))
+      } else {
+        return()
       }
       
     })

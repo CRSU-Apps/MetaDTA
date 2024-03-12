@@ -6,12 +6,6 @@
 PrevalencePageUi <- function(id) {
   ns <- NS(id)
   
-  # Loading in images for TP, FP, FN, TN
-  TPimg<-readPNG('./www/TP.png')
-  TNimg<-readPNG('./www/TN.png')
-  FPimg<-readPNG('./www/FP.png')
-  FNimg<-readPNG('./www/FN.png')
-  
   div(
     h1("Prevalence"),
     sidebarLayout(
@@ -81,6 +75,12 @@ PrevalencePageUi <- function(id) {
 PrevalencePageServer <- function(id, data) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+    
+    # Loading in images for TP, FP, FN, TN
+    TPimg <- readPNG("www/TP.png")
+    TNimg <- readPNG("www/TN.png")
+    FPimg <- readPNG("www/FP.png")
+    FNimg <- readPNG("www/FN.png")
     
     # Display inputs for the prevalence tab
     output$Prev_input <- renderUI({
