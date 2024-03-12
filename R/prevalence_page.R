@@ -1,17 +1,17 @@
 
-# Loading in images for TP, FP, FN, TN
-TPimg<-readPNG('./www/TP.png')
-TNimg<-readPNG('./www/TN.png')
-FPimg<-readPNG('./www/FP.png')
-FNimg<-readPNG('./www/FN.png')
-
-
 #' Module UI for the prevalence page.
 #' 
 #' @param id ID of the module
 #' @return Div for the prevalence page
 PrevalencePageUi <- function(id) {
   ns <- NS(id)
+  
+  # Loading in images for TP, FP, FN, TN
+  TPimg<-readPNG('./www/TP.png')
+  TNimg<-readPNG('./www/TN.png')
+  FPimg<-readPNG('./www/FP.png')
+  FNimg<-readPNG('./www/FN.png')
+  
   div(
     h1("Prevalence"),
     sidebarLayout(

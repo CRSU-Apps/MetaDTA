@@ -141,6 +141,15 @@ HomePageUi <- function(id) {
 #' @param id ID of the module
 HomePageServer <- function(id) {
   moduleServer(id, function(input, output, session) {
-    # Do nothing
+    
+    #Download User Guide
+    output$downloadUG <- downloadHandler(
+      # Specify the file name 
+      filename = "MetaDTA User Guide v1_0.pdf",
+      content = function(file) {
+        file.copy("www/MetaDTA User Guide v1_0.pdf", file)
+      }
+    )
+    
   })
 }
