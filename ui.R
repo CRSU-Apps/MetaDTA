@@ -209,45 +209,10 @@ navbarPage(
                          )
                     ),
                  
-                 ##########################
-                 ### Tab 5 - Prevalence ###
-                 ##########################
-                 tabPanel("Prevalence", h1("Prevalence"),
-                            sidebarLayout(
-                              sidebarPanel(
-                                uiOutput("Prev_input"),
-                                actionButton(inputId = "Prev_reset", label = "Reset inputs"),
-                                br(),
-                                br(),
-                                radioButtons(inputId = "treecheck", label = "Choose format to view expected results", choices = list("Tree 1"=1,
-                                             "Tree 2" = 2), selected = 1)
-                              ),
-                              mainPanel(
-                                tabsetPanel(
-                                  tabPanel("Meta-analysis", 
-                                           plotOutput("MA_treeplot"),
-                                           radioButtons("filetype3", label="Select image format", choices=list("png", "PDF")),
-                                           downloadButton("downloadPrev_MA", "Download Plot"),
-                                           br(),
-                                           br(),
-                                           p("Note: The numbers in brackets represent 95% confidence intervals.")
-                                           ),
-                                  tabPanel("Sensitivity analysis",
-                                           plotOutput("SA_treeplot"),
-                                           radioButtons("filetype4", label="Select image format", choices=list("png", "PDF")),
-                                           downloadButton("downloadPrev_SA", "Download Plot"),
-                                           br(),
-                                           br(),
-                                           p("Note: The sensitvity analysis tab should be visited in order to produce a plot. 
-                                             The numbers here will be the same as those in the meta-analysis tree diagram if no 
-                                             studies are excluded from the analysis in the sensitivity analysis tab."),
-                                           p("The numbers in brackets represent 95% confidence intervals.")
-                                           )
-                              
-                                )
-                              )
-                            )),
-  
+ tabPanel(
+   title = "Prevalence",
+   PrevalencePageUi(id = "prevalence")
+  ),
   tabPanel(
     title = "References",
     ReferencesPageUi(id = "references")

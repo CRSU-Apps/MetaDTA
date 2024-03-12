@@ -207,6 +207,8 @@ DataPageUi <- function(id) {
 #' Module server for the data upload page.
 #' 
 #' @param id ID of the module
+#' 
+#' @return Reactive containing data frame.
 DataPageServer <- function(id) {
   moduleServer(id, function(input, output, session) {
     
