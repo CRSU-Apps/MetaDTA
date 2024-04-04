@@ -58,7 +58,7 @@ AnalysisPageUi <- function(id) {
               label = "Select plot format",
               choices = c(
                 PNG = "png",
-                PDF = "pfd"
+                PDF = "pdf"
               )
             ),
             downloadButton(outputId = ns("downloadROC"), label = "Download Plot"),

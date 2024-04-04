@@ -5054,5 +5054,11 @@ SensitivityAnalysisPageServer <- function(id, data) {
         
         dev.off()
       })
+    
+    return(
+      reactive({
+        input$triallist
+      })
+    )
   })
 }

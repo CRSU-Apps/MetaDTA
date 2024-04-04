@@ -9,9 +9,9 @@ function(input, output, session) {
   
   AnalysisPageServer(id = "analysis", data = data)
   
-  SensitivityAnalysisPageServer(id = "sensitivity", data = data)
+  included_studies <- SensitivityAnalysisPageServer(id = "sensitivity", data = data)
 
-  PrevalencePageServer(id = "prevalence", data = data)
+  PrevalencePageServer(id = "prevalence", data = data, included_studies = included_studies)
   
   ReferencesPageServer(id = "references")
 }

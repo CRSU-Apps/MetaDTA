@@ -70,9 +70,10 @@ PrevalencePageUi <- function(id) {
 
 #' Module server for the prevalence page.
 #' 
-#' @param id ID of the module
+#' @param id ID of the module.
 #' @param data Reactive containing data frame.
-PrevalencePageServer <- function(id, data) {
+#' @param included_studies Reactive containing names of studies included in the sensitivity analysis.
+PrevalencePageServer <- function(id, data, included_studies) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
@@ -291,10 +292,17 @@ PrevalencePageServer <- function(id, data) {
     
     # Plot tree diagrams using the results from the sensitivity analysis
     output$SA_treeplot <- renderPlot({
-      if(is.null(data())){return()}
-      else
+      if (is.null(data())) {
+        return()
+      } else {
         adf <- data()
-      X <- adf[input$triallist, ]
+      }
+      
+      if (!is.null(included_studies())) {
+        X <- adf[included_studies(), ]
+      } else {
+        X <- adf
+      }
       
       N <- length(X$TP)
       
@@ -672,7 +680,12 @@ PrevalencePageServer <- function(id, data) {
           pdf(file)
         
         adf <- data()
-        X <- adf[input$triallist, ]
+        
+        if (!is.null(included_studies())) {
+          X <- adf[included_studies(), ]
+        } else {
+          X <- adf
+        }
         
         N <- length(X$TP)
         
