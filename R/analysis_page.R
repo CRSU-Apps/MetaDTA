@@ -19,7 +19,7 @@ AnalysisPageUi <- function(id) {
             title = "Study-level Outcomes", 
             br(), 
             p(
-              "Note: If the presence of zero's for two of TP, FN, FP and TN causes sensitivity or specificity to be calculated",
+              "Note: If the presence of zeros for two of TP, FN, FP and TN causes sensitivity or specificity to be calculated",
               "as 0/0 than an error message will appear."
             ),
             br(),

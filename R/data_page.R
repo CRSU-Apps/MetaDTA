@@ -13,7 +13,7 @@ DataPageUi <- function(id) {
         buttonLabel = "Select",
         accept = c(".csv", ".xlsx")
       ),
-      helpText("Default maximum file size is 5MB. Both Excel (.xlsx) and Comma Seperated Value (.csv) files are accepted."),
+      helpText("Default maximum file size is 5MB. Both Excel (.xlsx) and comma-separated values (.csv) files are accepted."),
       tags$hr(),
       h4(helpText(tags$strong("File options"))),
       checkboxInput(inputId = ns("header"), label = "First row as column headings", value = TRUE),
