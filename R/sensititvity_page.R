@@ -37,95 +37,115 @@ SensitivityAnalysisPageUi <- function(id) {
             br()
           ),
           tabPanel(
-            title = "SROC plot", 
-            h5("Note: At least two studies must be selected for inclusion to avoid an error message"),
-            br(),
-            textInput(
-              inputId = ns("title_sa"),
-              label = h4("Plot title"),
-              value = "Random Effects Meta-Analysis", 
-              width = '500px'
-            ),
-            uiOutput(outputId = ns("sensplot")),
-            br(),
-            radioButtons(
-              inputId = ns("filetype2"),
-              label = "Select plot format",
-              choices = c(
-                PNG = "png",
-                PDF = "pdf"
-              )
-            ),
-            downloadButton(outputId = ns("downloadROC_sa"), label = "Download Plot"),
-            br(),
-            br(),
-            h5(
-              "Click the middle of the data points for individual study summaries (an error message may occur if not",
-              "selecting the middle of the pie chart when displaying risk of bias or acceptability concerns)"
-            ),
-            textOutput(outputId = ns("clickinfo_ma2")),
+            title = "SROC plot",
             conditionalPanel(
-              condition = "input.plot_click_ma2 != null",
+              condition = "output.converged",
               ns = ns,
-              plotOutput(outputId = ns("piechart2"))
+              h5("Note: At least two studies must be selected for inclusion to avoid an error message"),
+              br(),
+              textInput(
+                inputId = ns("title_sa"),
+                label = h4("Plot title"),
+                value = "Random Effects Meta-Analysis", 
+                width = '500px'
+              ),
+              uiOutput(outputId = ns("sensplot")),
+              br(),
+              radioButtons(
+                inputId = ns("filetype2"),
+                label = "Select plot format",
+                choices = c(
+                  PNG = "png",
+                  PDF = "pdf"
+                )
+              ),
+              downloadButton(outputId = ns("downloadROC_sa"), label = "Download Plot"),
+              br(),
+              br(),
+              h5(
+                "Click the middle of the data points for individual study summaries (an error message may occur if not",
+                "selecting the middle of the pie chart when displaying risk of bias or acceptability concerns)"
+              ),
+              textOutput(outputId = ns("clickinfo_ma2")),
+              conditionalPanel(
+                condition = "input.plot_click_ma2 != null",
+                ns = ns,
+                plotOutput(outputId = ns("piechart2"))
+              )
             )
           ),
           tabPanel(
             title = "Statistics", 
-            h4("All studies"), 
-            tableOutput(outputId = ns("orig_statTable")),
-            br(),
-            h4("Selected studies only"),
-            tableOutput(outputId = ns("sa_statTable")),
-            downloadButton(outputId = ns("downloadSATable"), label = "Download Table")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              h4("All studies"), 
+              tableOutput(outputId = ns("orig_statTable")),
+              br(),
+              h4("Selected studies only"),
+              tableOutput(outputId = ns("sa_statTable")),
+              downloadButton(outputId = ns("downloadSATable"), label = "Download Table")
+            )
           ),
           tabPanel(
             title = "Parameter Estimates",
-            h5(
-              "Below are the parameter estimates for the bivariate normal distribution for mean sensitivity and",
-              "specificty (on the logit scale). Estimates here are taken from the senstivity analysis model which",
-              "only includes studies selected in the sidebar. Users may find these useful for further modelling",
-              "e.g. inclusion of test accuracy in a decision modelling framework."
-            ),
-            br(),
-            img(src = "decision_modelling_distribution.png", height = 100, width = 400),
-            br(),
-            h5("where:"),
-            tableOutput(outputId = ns("DecisionModel2")),
-            downloadButton(outputId = ns("downloadParameters2"), label = "Download Table")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              h5(
+                "Below are the parameter estimates for the bivariate normal distribution for mean sensitivity and",
+                "specificty (on the logit scale). Estimates here are taken from the senstivity analysis model which",
+                "only includes studies selected in the sidebar. Users may find these useful for further modelling",
+                "e.g. inclusion of test accuracy in a decision modelling framework."
+              ),
+              br(),
+              img(src = "decision_modelling_distribution.png", height = 100, width = 400),
+              br(),
+              h5("where:"),
+              tableOutput(outputId = ns("DecisionModel2")),
+              downloadButton(outputId = ns("downloadParameters2"), label = "Download Table")
+            )
           ),
           tabPanel(
             title = "Parameters for RevMan",
-            h5(
-              "Below are the parameter values required by Cochrane's RevMan software to",
-              "construct plots in the ROC space for users who wish to include the analysis results",
-              "as part of a Cochrane review."
-            ),
-            tableOutput(outputId = ns("revman2")),
-            downloadButton(outputId = ns("downloadRevMan2"), label = "Download Table")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              h5(
+                "Below are the parameter values required by Cochrane's RevMan software to",
+                "construct plots in the ROC space for users who wish to include the analysis results",
+                "as part of a Cochrane review."
+              ),
+              tableOutput(outputId = ns("revman2")),
+              downloadButton(outputId = ns("downloadRevMan2"), label = "Download Table")
+            )
           ),
           tabPanel(
             title = "Forest Plots",
-            fluidRow(
-              splitLayout(
-                cellWidths = c("50%", "50%"),
-                plotOutput(outputId = ns("forestSA_sens")),
-                plotOutput(outputId = ns("forestSA_spec"))
-              )
-            ),
-            radioButtons(
-              inputId = ns("filetype_forest2"),
-              label = "Select plot format",
-              choices = c(
-                PNG = "png",
-                PDF = "pdf"
-              )
-            ),
-            downloadButton(outputId = ns("download_forestSA_sens"), label = "Download Sensitivity Forest Plot"),
-            downloadButton(outputId = ns("download_forestSA_spec"), label = "Download Specificity Forest Plot"),
-            br(),
-            br(),
-            p("Note: These plots only include studies selected in the sidebar.")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              fluidRow(
+                splitLayout(
+                  cellWidths = c("50%", "50%"),
+                  plotOutput(outputId = ns("forestSA_sens")),
+                  plotOutput(outputId = ns("forestSA_spec"))
+                )
+              ),
+              radioButtons(
+                inputId = ns("filetype_forest2"),
+                label = "Select plot format",
+                choices = c(
+                  PNG = "png",
+                  PDF = "pdf"
+                )
+              ),
+              downloadButton(outputId = ns("download_forestSA_sens"), label = "Download Sensitivity Forest Plot"),
+              downloadButton(outputId = ns("download_forestSA_spec"), label = "Download Specificity Forest Plot"),
+              br(),
+              br(),
+              p("Note: These plots only include studies selected in the sidebar.")
+            )
           )
         )
       )
@@ -499,6 +519,36 @@ SensitivityAnalysisPageServer <- function(id, data) {
       }
     )
     
+    #Run the model in the server (i.e. not inside an output) and obtain the summary
+    model_summary <- reactive({
+      newData <- data()
+      b <- study_level_outcomes(newData) # get sens, spec for each trial
+      bb <- data.frame(Author=newData$author, Year=newData$year, TP=newData$TP, FN=newData$FN, FP=newData$FP, 
+                       TN=newData$TN, N=b$N, Sens=b$Sens, Spec=b$Spec)
+      bb$Sens <- sprintf('%4.3f', bb$Sens) # restrict number of figures after decimal place for sens
+      bb$Spec <- sprintf('%4.3f', bb$Spec)
+      # add information about percentage weights 
+      N <- length(newData$TP)
+      newData$n1 <- newData$TP+newData$FN
+      newData$n0 <- newData$FP+newData$TN
+      newData$true1 <- newData$TP
+      newData$true0 <- newData$TN 
+      newData$study <- 1:N
+      Y = reshape(newData, direction = "long", varying = list( c("n1" , "n0") , c( "true1","true0" ) ) ,
+                  timevar = "sens" , times = c(1,0) , v.names = c("n","true") ) 
+      Y = Y[order(Y$id),]  
+      Y$spec<- 1-Y$sens
+      MA_Y = glmer( formula = cbind(  true , n - true ) ~ 0 + sens + spec + (0+sens + spec|study),
+                    data = Y , family = binomial , nAGQ=1 , verbose=0 ) 
+      return(summary(MA_Y))
+    })
+    
+    #Check if the model converged
+    converged <- reactive(is.null(model_summary()$optinfo$conv$lme4$messages))
+    
+    #Add converged() reactive to the output list
+    output$converged <- reactive(converged())
+    outputOptions(x = output, name = "converged", suspendWhenHidden = FALSE)
     
     # Plot an interactive SROC curve for sensitivity analysis
     output$sroc_sa <- renderPlot({

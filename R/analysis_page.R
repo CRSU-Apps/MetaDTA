@@ -43,94 +43,114 @@ AnalysisPageUi <- function(id) {
           ),
           tabPanel(
             title = "SROC plot",
-            h5("Note: At least one box under 'Options for SROC plot tab' must be selected to avoid an error message"),
-            br(),
-            textInput(
-              inputId = ns("title"),
-              label = h4("Plot title"),
-              value = "Random Effects Meta-Analysis",
-              width = '500px'
-            ),
-            plotOutput(outputId = ns("sroc"), width = "750px", height = "750px", click = clickOpts(id = ns("plot_click_ma"))),
-            br(),
-            radioButtons(
-              inputId = ns("filetype"),
-              label = "Select plot format",
-              choices = c(
-                PNG = "png",
-                PDF = "pdf"
-              )
-            ),
-            downloadButton(outputId = ns("downloadROC"), label = "Download Plot"),
-            br(),
-            br(),
-            h5(
-              "Click the middle of the data points for individual study summaries (an error message may occur if not",
-              "selecting the middle of the pie chart when displaying risk of bias or acceptability concerns)"
-            ),
-            textOutput(outputId = ns("clickinfo_ma")),
             conditionalPanel(
-              condition = "input.plot_click_ma != null",
+              condition = "output.converged",
               ns = ns,
-              plotOutput(outputId = ns("piechart"))
-            ),
-            p(
-              "Note: If quality asessment data is being used and pie charts are being plotted then study weight and",
-              "covariates cannot be displayed. However, if selected on the sidebar the information will still be",
-              "displayed when individual studies are clicked on."
+              h5("Note: At least one box under 'Options for SROC plot tab' must be selected to avoid an error message"),
+              br(),
+              textInput(
+                inputId = ns("title"),
+                label = h4("Plot title"),
+                value = "Random Effects Meta-Analysis",
+                width = '500px'
+              ),
+              plotOutput(outputId = ns("sroc"), width = "750px", height = "750px", click = clickOpts(id = ns("plot_click_ma"))),
+              br(),
+              radioButtons(
+                inputId = ns("filetype"),
+                label = "Select plot format",
+                choices = c(
+                  PNG = "png",
+                  PDF = "pdf"
+                )
+              ),
+              downloadButton(outputId = ns("downloadROC"), label = "Download Plot"),
+              br(),
+              br(),
+              h5(
+                "Click the middle of the data points for individual study summaries (an error message may occur if not",
+                "selecting the middle of the pie chart when displaying risk of bias or acceptability concerns)"
+              ),
+              textOutput(outputId = ns("clickinfo_ma")),
+              conditionalPanel(
+                condition = "input.plot_click_ma != null",
+                ns = ns,
+                plotOutput(outputId = ns("piechart"))
+              ),
+              p(
+                "Note: If quality asessment data is being used and pie charts are being plotted then study weight and",
+                "covariates cannot be displayed. However, if selected on the sidebar the information will still be",
+                "displayed when individual studies are clicked on."
+              )
             )
           ),
           tabPanel(
             title = "Statistics",
-            br(),
-            tableOutput(outputId = ns("statTable")),
-            downloadButton(outputId = ns("downloadStatTable"), label = "Download Table"),
-            br(),
-            br()
-          ),
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              br(),
+              tableOutput(outputId = ns("statTable")),
+              downloadButton(outputId = ns("downloadStatTable"), label = "Download Table"),
+              br(),
+              br()
+              )
+            ),
           tabPanel(
             title = "Parameter Estimates", 
-            h5(
-              "Below are the parameter estimates for the bivariate normal distribution for mean sensitivity and",
-              "specificty (on the logit scale). Users may find these useful for further modelling e.g. inclusion",
-              "of test accuracy in a decision modelling framework."
-            ),
-            br(),
-            img(src = "decision_modelling_distribution.png", height = 100, width = 400),
-            br(),
-            h5("where:"),
-            tableOutput(outputId = ns("DecisionModel")),
-            downloadButton(outputId = ns("downloadParameters"), label = "Download Table")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              h5(
+                "Below are the parameter estimates for the bivariate normal distribution for mean sensitivity and",
+                "specificty (on the logit scale). Users may find these useful for further modelling e.g. inclusion",
+                "of test accuracy in a decision modelling framework."
+              ),
+              br(),
+              img(src = "decision_modelling_distribution.png", height = 100, width = 400),
+              br(),
+              h5("where:"),
+              tableOutput(outputId = ns("DecisionModel")),
+              downloadButton(outputId = ns("downloadParameters"), label = "Download Table")
+            )
           ),
           tabPanel(
             title = "Parameters for RevMan",
-            h5(
-              "Below are the parameter values required by Cochrane's RevMan software to",
-              "construct plots in the ROC space for users who wish to include the analysis results ",
-              "as part of a Cochrane review."
-            ),
-            tableOutput(outputId = ns("revman")),
-            downloadButton(outputId = ns("downloadRevMan"), label = "Download Table")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              h5(
+                "Below are the parameter values required by Cochrane's RevMan software to",
+                "construct plots in the ROC space for users who wish to include the analysis results ",
+                "as part of a Cochrane review."
+              ),
+              tableOutput(outputId = ns("revman")),
+              downloadButton(outputId = ns("downloadRevMan"), label = "Download Table")
+            )
           ),
           tabPanel(
             title = "Forest Plots",
-            fluidRow(
-              splitLayout(
-                cellWidths = c("50%", "50%"),
-                plotOutput(outputId = ns("forestMA_sens")),
-                plotOutput(outputId = ns("forestMA_spec"))
-              )
-            ),
-            radioButtons(
-              inputId = ns("filetype_forest"),
-              label = "Select plot format",
-              choices = c(
-                PNG = "png",
-                PDF = "pdf"
-              )
-            ),
-            downloadButton(outputId = ns("download_forestMA_sens"), label = "Download Sensitivity Forest Plot"),
-            downloadButton(outputId = ns("download_forestMA_spec"), label = "Download Specificity Forest Plot")
+            conditionalPanel(
+              condition = "output.converged",
+              ns = ns,
+              fluidRow(
+                splitLayout(
+                  cellWidths = c("50%", "50%"),
+                  plotOutput(outputId = ns("forestMA_sens")),
+                  plotOutput(outputId = ns("forestMA_spec"))
+                )
+              ),
+              radioButtons(
+                inputId = ns("filetype_forest"),
+                label = "Select plot format",
+                choices = c(
+                  PNG = "png",
+                  PDF = "pdf"
+                )
+              ),
+              downloadButton(outputId = ns("download_forestMA_sens"), label = "Download Sensitivity Forest Plot"),
+              downloadButton(outputId = ns("download_forestMA_spec"), label = "Download Specificity Forest Plot")
+            )
           )
         ) 
       )
@@ -469,6 +489,48 @@ AnalysisPageServer <- function(id, data) {
         write.table(bb, file, sep=",", row.names=FALSE)
       }
     )
+    
+    #Run the model in the server (i.e. not inside an output) and obtain the summary
+    model_summary <- reactive({
+      newData <- data()
+      b <- study_level_outcomes(newData) # get sens, spec for each trial
+      bb <- data.frame(Author=newData$author, Year=newData$year, TP=newData$TP, FN=newData$FN, FP=newData$FP, 
+                       TN=newData$TN, N=b$N, Sens=b$Sens, Spec=b$Spec)
+      bb$Sens <- sprintf('%4.3f', bb$Sens) # restrict number of figures after decimal place for sens
+      bb$Spec <- sprintf('%4.3f', bb$Spec)
+      # add information about percentage weights 
+      N <- length(newData$TP)
+      newData$n1 <- newData$TP+newData$FN
+      newData$n0 <- newData$FP+newData$TN
+      newData$true1 <- newData$TP
+      newData$true0 <- newData$TN 
+      newData$study <- 1:N
+      Y = reshape(newData, direction = "long", varying = list( c("n1" , "n0") , c( "true1","true0" ) ) ,
+                  timevar = "sens" , times = c(1,0) , v.names = c("n","true") ) 
+      Y = Y[order(Y$id),]  
+      Y$spec<- 1-Y$sens
+      MA_Y = glmer( formula = cbind(  true , n - true ) ~ 0 + sens + spec + (0+sens + spec|study),
+                    data = Y , family = binomial , nAGQ=1 , verbose=0 ) 
+      return(summary(MA_Y))
+    })
+    
+    #Check if the model converged
+    converged <- reactive(is.null(model_summary()$optinfo$conv$lme4$messages))
+    
+    #Add converged() reactive to the output list
+    output$converged <- reactive(converged())
+    outputOptions(x = output, name = "converged", suspendWhenHidden = FALSE)
+    
+    #If the model did not converge, display a warning
+    observe({
+      if (!converged()) {
+        shinyalert(
+          title = "WARNING - model failed to converge",
+          text = paste0("Most output will not be displayed. \n\n MetaDTA is not equipped for model diagnostics. You are advised to use other software. \n\nError message: \n", model_summary()$optinfo$conv$lme4$messages),
+          size = "l"
+        )
+      }
+    })
     
     # Plot an interactive SROC curve 
     output$sroc <- renderPlot({
