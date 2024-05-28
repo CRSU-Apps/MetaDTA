@@ -72,6 +72,11 @@ SensitivityAnalysisPageUi <- function(id) {
                 ns = ns,
                 plotOutput(outputId = ns("piechart2"))
               )
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -85,6 +90,11 @@ SensitivityAnalysisPageUi <- function(id) {
               h4("Selected studies only"),
               tableOutput(outputId = ns("sa_statTable")),
               downloadButton(outputId = ns("downloadSATable"), label = "Download Table")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -104,6 +114,11 @@ SensitivityAnalysisPageUi <- function(id) {
               h5("where:"),
               tableOutput(outputId = ns("DecisionModel2")),
               downloadButton(outputId = ns("downloadParameters2"), label = "Download Table")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -118,6 +133,11 @@ SensitivityAnalysisPageUi <- function(id) {
               ),
               tableOutput(outputId = ns("revman2")),
               downloadButton(outputId = ns("downloadRevMan2"), label = "Download Table")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -145,6 +165,11 @@ SensitivityAnalysisPageUi <- function(id) {
               br(),
               br(),
               p("Note: These plots only include studies selected in the sidebar.")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           )
         )

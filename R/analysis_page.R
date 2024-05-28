@@ -82,6 +82,11 @@ AnalysisPageUi <- function(id) {
                 "covariates cannot be displayed. However, if selected on the sidebar the information will still be",
                 "displayed when individual studies are clicked on."
               )
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -94,7 +99,12 @@ AnalysisPageUi <- function(id) {
               downloadButton(outputId = ns("downloadStatTable"), label = "Download Table"),
               br(),
               br()
-              )
+              ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
+            )
             ),
           tabPanel(
             title = "Parameter Estimates", 
@@ -112,6 +122,11 @@ AnalysisPageUi <- function(id) {
               h5("where:"),
               tableOutput(outputId = ns("DecisionModel")),
               downloadButton(outputId = ns("downloadParameters"), label = "Download Table")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -126,6 +141,11 @@ AnalysisPageUi <- function(id) {
               ),
               tableOutput(outputId = ns("revman")),
               downloadButton(outputId = ns("downloadRevMan"), label = "Download Table")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           ),
           tabPanel(
@@ -150,6 +170,11 @@ AnalysisPageUi <- function(id) {
               ),
               downloadButton(outputId = ns("download_forestMA_sens"), label = "Download Sensitivity Forest Plot"),
               downloadButton(outputId = ns("download_forestMA_spec"), label = "Download Specificity Forest Plot")
+            ),
+            conditionalPanel(
+              condition = "!output.converged",
+              ns = ns,
+              non_convergence_warning_ui()
             )
           )
         ) 
@@ -526,7 +551,7 @@ AnalysisPageServer <- function(id, data) {
       if (!converged()) {
         shinyalert(
           title = "WARNING - model failed to converge",
-          text = paste0("Most output will not be displayed. \n\n MetaDTA is not equipped for model diagnostics. You are advised to use other software. \n\nError message: \n", model_summary()$optinfo$conv$lme4$messages),
+          text = paste0("Most output will not be displayed. \n\n MetaDTA is not equipped for model diagnostics. You are advised to use MetaBayesDTA (https://www.gla.ac.uk/research/az/crsu/apps-materials-guidence/) or other software. \n\nError message: \n", model_summary()$optinfo$conv$lme4$messages),
           size = "l"
         )
       }
