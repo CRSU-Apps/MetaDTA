@@ -5,7 +5,7 @@
 #' @return Div for the home page
 HomePageUi <- function(id) {
   div(
-    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.1 (February 2024)"),
+    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.2 (June 2024)"),
     br(),
     h4(
       "Version 2.0 is the version as described in the paper:",
@@ -80,10 +80,11 @@ HomePageUi <- function(id) {
     br(),
     br(),
     p(tags$b("Latest update:")),
+    p(tags$b("v2.1.2 - June 2024")),
+    p("Added an error message when the model doesn't converge, and removed most of the output in this case."),
+    p("In previous versions, on rare occasions the model may not have converged without any warning being displayed to the user."),
     p(tags$b("v2.1.1 - February 2024")),
     p("Updated funding statement and logo"),
-    p(tags$b("v2.1.0 - January 2024")),
-    p("Uploading data made easier - excel files can be uploaded and non-standard characters are accepted."),
     p(
       "A full update history of MetaDTA can be found on", 
       tags$a(
