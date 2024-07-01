@@ -31,6 +31,13 @@ authors:
     given-names: Naomi
     affiliation: University of Leicester
     orcid: 'https://orcid.org/0000-0002-8934-6301'
+  - family-names: Morris
+    given-names: Tom
+    affilitation: University of Leicester
+    orcid: 'https://orcid.org/0000-0003-3996-802X'
+  - family-names: Nevill
+    given-names: Janion
+    affiliation: University of Leicester
   - family-names: Quinn
     given-names: Terry
     affiliation: University of Glasgow
@@ -53,5 +60,5 @@ keywords:
   - MetaDTA
   - RShiny
 license: GPL-3.0-or-later
-version: 2.1.1
-date-released: '2024-02-23'
+version: 2.1.2
+date-released: '2024-06-26'
