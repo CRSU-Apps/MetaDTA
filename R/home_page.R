@@ -5,7 +5,7 @@
 #' @return Div for the home page
 HomePageUi <- function(id) {
   div(
-    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.2 (June 2024)"),
+    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.2 (July 2024)"),
     br(),
     h4(
       "Version 2.0 is the version as described in the paper:",
