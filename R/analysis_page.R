@@ -492,7 +492,7 @@ AnalysisPageServer <- function(id, data) {
       }
     )
     
-    sroc_plot <- reactive(
+    output$sroc <- renderPlot({
       DrawSrocPlot(data = data(),
                    covcheck = input$covcheck,
                    HSROCcheck = input$HSROCcheck,
@@ -505,17 +505,13 @@ AnalysisPageServer <- function(id, data) {
                    weightcheck = input$weightcheck,
                    ci_col = input$ci_col,
                    extrapp = input$extrapp)
-      )
-    
-    output$sroc <- renderPlot({
-      sroc_plot()
     })
     
     # Allow users to download the interactive SROC curve
     output$downloadROC <- downloadHandler(
       # Specify the file name (either roc.png or roc.pdf)
       filename = function(){
-        paste("roc", input$filetype, sep=".")
+        paste("sroc", input$filetype, sep=".")
       },
       content = function(file){
         if (input$filetype == "png") {
@@ -523,7 +519,18 @@ AnalysisPageServer <- function(id, data) {
         } else{
           pdf(file, width = 8.5, height = 8.5)
         }
-        sroc_plot()
+        DrawSrocPlot(data = data(),
+                     covcheck = input$covcheck,
+                     HSROCcheck = input$HSROCcheck,
+                     prevcheck = input$prevcheck,
+                     bivcheck = input$bivcheck,
+                     cicheck = input$cicheck,
+                     QAcheck = input$QAcheck,
+                     cov_toggle = input$cov_toggle,
+                     title = input$title,
+                     weightcheck = input$weightcheck,
+                     ci_col = input$ci_col,
+                     extrapp = input$extrapp)
         dev.off()
       }
     )
