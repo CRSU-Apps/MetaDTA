@@ -5,7 +5,7 @@
 #' @return Div for the home page
 HomePageUi <- function(id) {
   div(
-    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.2 (July 2024)"),
+    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.3 (August 2024)"),
     br(),
     h4(
       "Version 2.0 is the version as described in the paper:",
@@ -53,7 +53,7 @@ HomePageUi <- function(id) {
       )
     ),
     br(),
-    h4("Suzanne Freeman, Clareece Nevill, Amit Patel, Nicola Cooper, Terry Quinn, Alex Sutton"),
+    h4("Suzanne Freeman, Clareece Nevill, Tom Morris, Naomi Bradbury, Janion Nevill, Ryan Field, Amit Patel, Nicola Cooper, Terry Quinn, Alex Sutton"),
     p("For feedback/questions about this app please contact apps@crsu.org.uk"),
     p("App powered by Rshiny with statistical analyses performed using the package lme4:"),
     tags$a(
@@ -80,6 +80,8 @@ HomePageUi <- function(id) {
     br(),
     br(),
     p(tags$b("Latest update:")),
+    p(tags$b("v2.1.3 - August 2024")),
+    p("Fixed a bug which prevented the risk of bias piecharts from diplaying under the SROC plots."),
     p(tags$b("v2.1.2 - June 2024")),
     p("Added an error message when the model doesn't converge, and removed most of the output in this case."),
     p("In previous versions, on rare occasions the model may not have converged without any warning being displayed to the user."),
