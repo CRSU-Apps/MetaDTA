@@ -535,6 +535,55 @@ AnalysisPageServer <- function(id, data) {
       }
     )
     
+    # Plot of individual pie chart if clicked on
+    output$piechart <- renderPlot({
+      if(is.null(data())){return()}
+      else
+        PData <- data()
+      e <- study_level_outcomes(PData)
+      if ('9' %in% input$QAcheck){
+        ee <- data.frame(Author=PData$author,Year=PData$year, TP=PData$TP, FN=PData$FN, FP=PData$FP, 
+                         TN=PData$TN, Sensitivity=e$Sensitivity, Specificity=e$Specificity, 
+                         FPR=e$FPR, rob_PS=PData$rob_PS, rob_IT=PData$rob_IT, rob_RS=PData$rob_RS, rob_FT=PData$rob_FT )
+        clickselect_pc <- nearPoints(ee, input$plot_click_ma, xvar="FPR", yvar="Sensitivity", threshold=5, maxpoints=1)
+        clickselect_pc <- reshape(clickselect_pc, direction = "long", varying = c("rob_PS", "rob_IT", "rob_RS", "rob_FT"), 
+                                  v.names = "score", timevar = "rob", times = c("rob_PS", "rob_IT", "rob_RS", "rob_FT"))
+        labels_rob <- c("Patient selection", "Index test", "Reference standard", "Flow & timing")
+        weight <-c(1,1,1,1)
+        pie(weight, labels_rob, main = "Risk of bias for each domain from the selected study",
+            col=ifelse(clickselect_pc$score == 1, "green", ifelse(clickselect_pc$score == 2, "red", "lavenderblush3")))
+        legend(0.9,0.1, c("Low", "High", "Unclear"), cex =0.7, fill = c("green", "red", "lavenderblush3"))
+      }
+      if ('10' %in% input$QAcheck){
+        ee <- data.frame(Author=PData$author,Year=PData$year, TP=PData$TP, FN=PData$FN, FP=PData$FP, 
+                         TN=PData$TN, Sensitivity=e$Sensitivity, Specificity=e$Specificity, 
+                         FPR=e$FPR, ac_PS=PData$ac_PS, ac_IT=PData$ac_IT, ac_RS=PData$ac_RS)
+        clickselect_pc <- nearPoints(ee, input$plot_click_ma, xvar="FPR", yvar="Sensitivity", threshold=5, maxpoints=1)
+        clickselect_pc <- reshape(clickselect_pc, direction = "long", varying = c("ac_PS", "ac_IT", "ac_RS"), 
+                                  v.names = "score", timevar = "rob", times = c("ac_PS", "ac_IT", "ac_RS"))
+        labels_ac <- c("Patient selection", "Index test", "Reference standard")
+        weight <-c(1,1,1)
+        pie(weight, labels_ac, main = "Applicability concern for each domain from the selected study",
+            col=ifelse(clickselect_pc$score == 1, "green", ifelse(clickselect_pc$score == 2, "red", "lavenderblush3")))
+        legend(0.9,0.1, c("Low", "High", "Unclear"), cex =0.7, fill = c("green", "red", "lavenderblush3"))
+      }
+      if ('11' %in% input$QAcheck){
+        ee <- data.frame(Author=PData$author,Year=PData$year, TP=PData$TP, FN=PData$FN, FP=PData$FP, 
+                         TN=PData$TN, Sensitivity=e$Sensitivity, Specificity=e$Specificity, 
+                         FPR=e$FPR, rob_PS=PData$rob_PS, rob_IT=PData$rob_IT, rob_RS=PData$rob_RS, rob_FT=PData$rob_FT,
+                         ac_PS=PData$ac_PS, ac_IT=PData$ac_IT, ac_RS=PData$ac_RS)
+        clickselect_pc <- nearPoints(ee, input$plot_click_ma, xvar="FPR", yvar="Sensitivity", threshold=5, maxpoints=1)
+        clickselect_pc <-reshape(clickselect_pc, direction = "long", varying = c("rob_PS", "rob_IT", "rob_RS", "rob_FT", "ac_PS", "ac_IT", "ac_RS"),
+                                 v.names = "score", timevar = "rob", times = c("rob_PS", "rob_IT", "rob_RS", "rob_FT", "ac_PS", "ac_IT", "ac_RS"))
+        labels_both <- c("rob_PS", "rob_IT", "rob_RS", "rob_FT", "ac_PS", "ac_IT", "ac_RS")
+        #weight <- c(1.25, 1.25, 1.25, 1.25, 5/3, 5/3, 5/3) # weight for pie chart split in half
+        weight <- c(1,1,1,1,1,1,1) # weight where each section is equally split
+        pie(weight, labels_both, main = "Scores from each element of the QUADAS-2 tool",
+            col=ifelse(clickselect_pc$score == 1, "green", ifelse(clickselect_pc$score == 2, "red", "lavenderblush3")))
+        legend(0.9,0.1, c("Low", "High", "Unclear"), cex =0.7, fill = c("green", "red", "lavenderblush3"))
+      }
+      
+    })
     
     # Text displaying details about studies if clicked on in the plot
     output$clickinfo_ma <- renderText({
