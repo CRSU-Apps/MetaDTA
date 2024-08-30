@@ -53,7 +53,7 @@ HomePageUi <- function(id) {
       )
     ),
     br(),
-    h4("Suzanne Freeman, Clareece Nevill, Amit Patel, Nicola Cooper, Terry Quinn, Alex Sutton"),
+    h4("Suzanne Freeman, Clareece Nevill, Tom Morris, Naomi Bradbury, Janion Nevill, Ryan Field, Amit Patel, Nicola Cooper, Terry Quinn, Alex Sutton"),
     p("For feedback/questions about this app please contact apps@crsu.org.uk"),
     p("App powered by Rshiny with statistical analyses performed using the package lme4:"),
     tags$a(
