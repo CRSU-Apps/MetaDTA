@@ -126,7 +126,7 @@ HomePageUi <- function(id) {
         tags$p(
           "More information about the UK NIHR Complex Reviews Synthesis Unit (CRSU) can be found ",
           tags$a(
-            href = "https://www.gla.ac.uk/research/az/evidencesynthesis/apps-materials-guidence/",
+            href = "https://crsu.org.uk/apps/",
             "on our website.",
             target = "_blank"
           ),
