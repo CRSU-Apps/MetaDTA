@@ -396,7 +396,7 @@ AnalysisPageServer <- function(id, data) {
       if (!converged()) {
         shinyalert(
           title = "WARNING - model failed to converge",
-          text = paste0("Most output will not be displayed. </br> </br> MetaDTA is not equipped for model diagnostics. You are advised to use MetaBayesDTA ", tags$a("https://www.gla.ac.uk/research/az/crsu/apps-materials-guidence/", href="https://www.gla.ac.uk/research/az/crsu/apps-materials-guidence/", target="_blank"), " or other software. </br> </br> Error message: ", model_summary()$optinfo$conv$lme4$messages),
+          text = paste0("Most output will not be displayed. </br> </br> MetaDTA is not equipped for model diagnostics. You are advised to use MetaBayesDTA ", tags$a("https://crsu.org.uk/apps/", href="https://crsu.org.uk/apps/", target="_blank"), " or other software. </br> </br> Error message: ", model_summary()$optinfo$conv$lme4$messages),
           size = "l",
           html = TRUE
         )
