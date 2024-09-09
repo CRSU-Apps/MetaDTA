@@ -11,17 +11,20 @@ HomePageUi <- function(id) {
       "Version 2.0 is the version as described in the paper:",
        tags$a(
          href = "https://onlinelibrary.wiley.com/doi/full/10.1002/jrsm.1439",
-         "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439."
+         "Patel A, Cooper NJ, Freeman SC, Sutton AJ. Graphical enhancements to summary receiver operating charcateristic plots to facilitate the analysis and reporting of meta-analysis of diagnostic test accuracy data. Research Synthesis Methods 2020, https://doi.org/10.1002/jrsm.1439.",
+         target = "_blank"
         )
     ),
     h4(
       "This builds on the previous version as described in the paper:",
       tags$a(
         href = "https://bmcmedresmethodol.biomedcentral.com/articles/10.1186/s12874-019-0724-x",
-        "Freeman SC, Kerby CR, Patel A, Cooper NJ, Quinn T, Sutton AJ. Development of an interactive web-based tool to conduct and interrogate meta-analysis of diagnostic test accuracy studies: MetaDTA. BMC Medical Research Methodology 2019; 19: 81"
+        "Freeman SC, Kerby CR, Patel A, Cooper NJ, Quinn T, Sutton AJ. Development of an interactive web-based tool to conduct and interrogate meta-analysis of diagnostic test accuracy studies: MetaDTA. BMC Medical Research Methodology 2019; 19: 81",
+        target = "_blank"
       ),
       "which can be accessed at",
-      tags$a(href = "https://crsu.shinyapps.io/dta_ma_v1/", "MetaDTA version 1.27.")
+      tags$a(href = "https://crsu.shinyapps.io/dta_ma_v1/", "MetaDTA version 1.27.",
+      target = "_blank")
     ), 
     h4("If you use MetaDTA please cite these papers."),
     br(),
@@ -29,7 +32,8 @@ HomePageUi <- function(id) {
       tags$a(
         href = "https://crsu.shinyapps.io/MetaBayesDTA/",
         "MetaBayesDTA is now available!",
-        style = "color:#14DBA8"
+        style = "color:#14DBA8",
+        target = "_blank"
       )
     ),
     h5(
@@ -64,7 +68,8 @@ HomePageUi <- function(id) {
     br(),
     p(
       "Codes for this app are available on GitHub:",
-      tags$a(href = "https://github.com/CRSU-Apps/MetaDTA", "https://github.com/CRSU-Apps/MetaDTA"),
+      tags$a(href = "https://github.com/CRSU-Apps/MetaDTA", "https://github.com/CRSU-Apps/MetaDTA",
+      target = "_blank"),
     ),
     br(),
     p("Download a copy of the MetaDTA User Guide here:"),
