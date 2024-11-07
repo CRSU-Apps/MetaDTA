@@ -241,10 +241,11 @@ SensitivityAnalysisPageServer <- function(id, data) {
             "Sensitivity" = 1,
             "Specificity" = 2,
             "False Positive Rate" = 3,
-            "Correlation" = 4,
-            "HSROC parameters" = 5,
-            "Diagnostic Odds Ratio" = 6,
-            "Likelihood Ratios" = 7
+            "False Negative Rate" = 4,
+            "Correlation" = 5,
+            "HSROC parameters" = 6,
+            "Diagnostic Odds Ratio" = 7,
+            "Likelihood Ratios" = 8
           ),
           selected = list(1, 2, 3)
         ),
@@ -2488,6 +2489,9 @@ SensitivityAnalysisPageServer <- function(id, data) {
       # Calculate false positive rate
       fpr <- c(1-Spec[1], 1-Spec[3], 1-Spec[2])
       
+      # Calculate false negative rate
+      fnr <- c(1-Sens[1], 1-Sens[3], 1-Sens[2])
+      
       # Extract correlation
       correlation <- attributes(ma_Y$varcor$study)$correlation[2]
       
@@ -2531,65 +2535,67 @@ SensitivityAnalysisPageServer <- function(id, data) {
       # Then I used to use as.numeric to convert them to numeric but this doesn't work in R version 4.0.1
       # So now I use 9999 instead. I consider this to be such a number that noone would believe it is correct
       # so it shouldn't have any impact on the user experience
-      Z = data.frame(estimate = c(logit_Sens[1], logit_Spec[1], Sens[1], Spec[1], fpr[1], DOR , LRp , LRn, correlation,
+      Z = data.frame(estimate = c(logit_Sens[1], logit_Spec[1], Sens[1], Spec[1], fpr[1], fnr[1], DOR , LRp , LRn, correlation,
                                   Theta, Lambda, beta, sigma2_theta, sigma2_alpha),
-                     lci = c(logit_Sens[2], logit_Spec[2], Sens[2], Spec[2], fpr[2], exp(log(DOR)-qnorm(0.975)*logse.DOR) , 
+                     lci = c(logit_Sens[2], logit_Spec[2], Sens[2], Spec[2], fpr[2], fnr[2], exp(log(DOR)-qnorm(0.975)*logse.DOR) , 
                              exp(log(LRp)-qnorm(0.975)*logse.LRp) , 
                              exp(log(LRn)-qnorm(0.975)*logse.LRn), 9999, 9999, 9999, 9999, 9999, 9999),
-                     uci = c(logit_Sens[3], logit_Spec[3], Sens[3], Spec[3], fpr[3], exp(log(DOR)+qnorm(0.975)*logse.DOR) , 
+                     uci = c(logit_Sens[3], logit_Spec[3], Sens[3], Spec[3], fpr[3], fnr[3], exp(log(DOR)+qnorm(0.975)*logse.DOR) , 
                              exp(log(LRp)+qnorm(0.975)*logse.LRp) , 
                              exp(log(LRn)+qnorm(0.975)*logse.LRn), 9999, 9999, 9999, 9999, 9999, 9999),
-                     row.names=c("Logit Sens", "Logit Spec", "Sensitivity", "Specifcity", "FPR", "DOR", "LR+" , "LR-", "Correlation",
+                     row.names=c("Logit Sens", "Logit Spec", "Sensitivity", "Specifcity", "FPR", "FNR", "DOR", "LR+" , "LR-", "Correlation",
                                  "Theta", "Lambda", "beta", 
                                  "sigma2_theta", "sigma2_alpha")
       )
       
       # Create a matrix to store the parameter estimates
-      s.matrix <- matrix(nrow=15, ncol=4)
+      s.matrix <- matrix(nrow=16, ncol=4)
       s.matrix[1,1] <- "Sensitivity"
       s.matrix[2,1] <- "Specificity"
       s.matrix[3,1] <- "False Positive Rate"
-      s.matrix[4,1] <- "Random Effects Correlation"
-      s.matrix[5,1] <- HTML("&theta;")
-      s.matrix[6,1] <- HTML("&lambda;")
-      s.matrix[7,1] <- HTML("&beta;")
-      s.matrix[8,1] <- HTML("&sigma;<sub>&theta;</sub>")
-      s.matrix[9,1] <- HTML("&sigma;<sub>&alpha;</sub>")
-      s.matrix[10,1] <- "Diagnostic Odds Ratio"
-      s.matrix[11,1] <- "Likelihood Ratio +ve"
-      s.matrix[12,1] <- "Likelihood Ratio -ve"
-      s.matrix[13,1] <- "logit(sensitivity)"
-      s.matrix[14,1] <- "logit(specificity)"
+      s.matrix[4,1] <- "False Negative Rate"
+      s.matrix[5,1] <- "Random Effects Correlation"
+      s.matrix[6,1] <- HTML("&theta;")
+      s.matrix[7,1] <- HTML("&lambda;")
+      s.matrix[8,1] <- HTML("&beta;")
+      s.matrix[9,1] <- HTML("&sigma;<sub>&theta;</sub>")
+      s.matrix[10,1] <- HTML("&sigma;<sub>&alpha;</sub>")
+      s.matrix[11,1] <- "Diagnostic Odds Ratio"
+      s.matrix[12,1] <- "Likelihood Ratio +ve"
+      s.matrix[13,1] <- "Likelihood Ratio -ve"
+      s.matrix[14,1] <- "logit(sensitivity)"
+      s.matrix[15,1] <- "logit(specificity)"
       s.matrix[1,2] <- sprintf('%4.3f', Z[3,1])
       s.matrix[2,2] <- sprintf('%4.3f', Z[4,1])
       s.matrix[3,2] <- sprintf('%4.3f', Z[5,1])
-      s.matrix[4,2] <- sprintf('%4.3f', Z[9,1])
+      s.matrix[4,2] <- sprintf('%4.3f', Z[6,1])
       s.matrix[5,2] <- sprintf('%4.3f', Z[10,1])
       s.matrix[6,2] <- sprintf('%4.3f', Z[11,1])
       s.matrix[7,2] <- sprintf('%4.3f', Z[12,1])
       s.matrix[8,2] <- sprintf('%4.3f', Z[13,1])
       s.matrix[9,2] <- sprintf('%4.3f', Z[14,1])
-      s.matrix[10,2] <- sprintf('%4.3f', Z[6,1])
+      s.matrix[10,2] <- sprintf('%4.3f', Z[15,1])
       s.matrix[11,2] <- sprintf('%4.3f', Z[7,1])
       s.matrix[12,2] <- sprintf('%4.3f', Z[8,1])
-      s.matrix[13,2] <- sprintf('%4.3f', Z[1,1])
-      s.matrix[14,2] <- sprintf('%4.3f', Z[2,1])
+      s.matrix[13,2] <- sprintf('%4.3f', Z[9,1])
+      s.matrix[14,2] <- sprintf('%4.3f', Z[1,1])
+      s.matrix[15,2] <- sprintf('%4.3f', Z[2,1])
       s.matrix[1,3] <- sprintf('%4.3f', Z[3,2])
       s.matrix[1,4] <- sprintf('%4.3f', Z[3,3])
       s.matrix[2,3] <- sprintf('%4.3f', Z[4,2])
       s.matrix[2,4] <- sprintf('%4.3f', Z[4,3])
       s.matrix[3,3] <- sprintf('%4.3f', Z[5,2])
       s.matrix[3,4] <- sprintf('%4.3f', Z[5,3])
-      s.matrix[4,3] <- ""
-      s.matrix[4,4] <- ""
-      s.matrix[10,3] <- sprintf('%4.3f', Z[6,2])
-      s.matrix[10,4] <- sprintf('%4.3f', Z[6,3])
+      s.matrix[4,3] <- sprintf('%4.3f', Z[6,2])
+      s.matrix[4,4] <- sprintf('%4.3f', Z[6,3])
+      s.matrix[5,3] <- ""
+      s.matrix[5,4] <- ""
       s.matrix[11,3] <- sprintf('%4.3f', Z[7,2])
       s.matrix[11,4] <- sprintf('%4.3f', Z[7,3])
       s.matrix[12,3] <- sprintf('%4.3f', Z[8,2])
       s.matrix[12,4] <- sprintf('%4.3f', Z[8,3])
-      s.matrix[5,3] <- ""
-      s.matrix[5,4] <- ""
+      s.matrix[13,3] <- sprintf('%4.3f', Z[9,2])
+      s.matrix[13,4] <- sprintf('%4.3f', Z[9,3])
       s.matrix[6,3] <- ""
       s.matrix[6,4] <- ""
       s.matrix[7,3] <- ""
@@ -2598,30 +2604,33 @@ SensitivityAnalysisPageServer <- function(id, data) {
       s.matrix[8,4] <- ""
       s.matrix[9,3] <- ""
       s.matrix[9,4] <- ""
-      s.matrix[13,3] <- sprintf('%4.3f', Z[1,2])
-      s.matrix[14,3] <- sprintf('%4.3f', Z[2,2])
-      s.matrix[13,4] <- sprintf('%4.3f', Z[1,3])
-      s.matrix[14,4] <- sprintf('%4.3f', Z[2,3])
-      s.matrix[15, 1:4] <- ""
+      s.matrix[10,3] <- ""
+      s.matrix[10,4] <- ""
+      s.matrix[14,3] <- sprintf('%4.3f', Z[1,2])
+      s.matrix[15,3] <- sprintf('%4.3f', Z[2,2])
+      s.matrix[14,4] <- sprintf('%4.3f', Z[1,3])
+      s.matrix[15,4] <- sprintf('%4.3f', Z[2,3])
+      s.matrix[16, 1:4] <- ""
       
       #Name the columns of the matrix
       colnames(s.matrix) <- c("Parameter", "Estimate", "2.5% CI", "97.5% CI")
       
       #Conditions to display which statistics are shown in the table
       #Start with a logical vector of false and replace ths with true if the corresponding box is ticked
-      statticks <- logical(length=15) # default is false
+      statticks <- logical(length=16) # default is false
       # always have the bottom empty row showing
-      statticks[15] <- TRUE
+      statticks[16] <- TRUE
       # which rows are displayed will depend on the options selected
       if ('1' %in% input$statscheck2) {statticks[1] <- T}
       if ('2' %in% input$statscheck2) {statticks[2] <- T}
       if ('3' %in% input$statscheck2) {statticks[3] <- T}
       if ('4' %in% input$statscheck2) {statticks[4] <- T}
-      if ('5' %in% input$statscheck2) {statticks[5:9] <- T}
-      if ('6' %in% input$statscheck2) {statticks[10] <- T}
-      if ('7' %in% input$statscheck2) {statticks[11:12] <- T}
-      if ('1' %in% input$statscheck2) {statticks[13] <- T}
-      if ('2' %in% input$statscheck2) {statticks[14] <- T}
+      if ('5' %in% input$statscheck2) {statticks[5] <- T}
+      if ('6' %in% input$statscheck2) {statticks[6:10] <- T}
+      if ('7' %in% input$statscheck2) {statticks[11] <- T}
+      if ('8' %in% input$statscheck2) {statticks[12:13] <- T}
+      if ('1' %in% input$statscheck2) {statticks[14] <- T}
+      if ('2' %in% input$statscheck2) {statticks[15] <- T}
       
       #Only the rows of s.matrix where statticks=T will be displayed
       s.matrix[statticks,]
@@ -2685,6 +2694,9 @@ SensitivityAnalysisPageServer <- function(id, data) {
       # Calculate false positive rate
       fpr <- c(1-Spec[1], 1-Spec[3], 1-Spec[2])
       
+      # Calculate false negative rate
+      fnr <- c(1-Sens[1], 1-Sens[3], 1-Sens[2])
+      
       # Extract correlation
       correlation <- attributes(ma_Y$varcor$study)$correlation[2]
       
@@ -2728,65 +2740,67 @@ SensitivityAnalysisPageServer <- function(id, data) {
       # Then I used to use as.numeric to convert them to numeric but this doesn't work in R version 4.0.1
       # So now I use 9999 instead. I consider this to be such a number that noone would believe it is correct
       # so it shouldn't have any impact on the user experience
-      Z = data.frame(estimate = c(logit_Sens[1], logit_Spec[1], Sens[1], Spec[1], fpr[1], DOR , LRp , LRn, correlation,
+      Z = data.frame(estimate = c(logit_Sens[1], logit_Spec[1], Sens[1], Spec[1], fpr[1], fnr[1], DOR , LRp , LRn, correlation,
                                   Theta, Lambda, beta, sigma2_theta, sigma2_alpha),
-                     lci = c(logit_Sens[2], logit_Spec[2], Sens[2], Spec[2], fpr[2], exp(log(DOR)-qnorm(0.975)*logse.DOR) , 
+                     lci = c(logit_Sens[2], logit_Spec[2], Sens[2], Spec[2], fpr[2], fnr[2], exp(log(DOR)-qnorm(0.975)*logse.DOR) , 
                              exp(log(LRp)-qnorm(0.975)*logse.LRp) , 
                              exp(log(LRn)-qnorm(0.975)*logse.LRn), 9999, 9999, 9999, 9999, 9999, 9999),
-                     uci = c(logit_Sens[3], logit_Spec[3], Sens[3], Spec[3], fpr[3], exp(log(DOR)+qnorm(0.975)*logse.DOR) , 
+                     uci = c(logit_Sens[3], logit_Spec[3], Sens[3], Spec[3], fpr[3], fnr[3], exp(log(DOR)+qnorm(0.975)*logse.DOR) , 
                              exp(log(LRp)+qnorm(0.975)*logse.LRp) , 
                              exp(log(LRn)+qnorm(0.975)*logse.LRn), 9999, 9999, 9999, 9999, 9999, 9999),
-                     row.names=c("Logit Sens", "Logit Spec", "Sensitivity", "Specifcity", "FPR", "DOR", "LR+" , "LR-", "Correlation",
+                     row.names=c("Logit Sens", "Logit Spec", "Sensitivity", "Specifcity", "FPR", "FNR", "DOR", "LR+" , "LR-", "Correlation",
                                  "Theta", "Lambda", "beta", 
                                  "sigma2_theta", "sigma2_alpha")
       )
       
       # Create a matrix to store the parameter estimates
-      s.matrix <- matrix(nrow=15, ncol=4)
+      s.matrix <- matrix(nrow=16, ncol=4)
       s.matrix[1,1] <- "Sensitivity"
       s.matrix[2,1] <- "Specificity"
       s.matrix[3,1] <- "False Positive Rate"
-      s.matrix[4,1] <- "Random Effects Correlation"
-      s.matrix[5,1] <- HTML("&theta;")
-      s.matrix[6,1] <- HTML("&lambda;")
-      s.matrix[7,1] <- HTML("&beta;")
-      s.matrix[8,1] <- HTML("&sigma;<sub>&theta;</sub>")
-      s.matrix[9,1] <- HTML("&sigma;<sub>&alpha;</sub>")
-      s.matrix[10,1] <- "Diagnostic Odds Ratio"
-      s.matrix[11,1] <- "Likelihood Ratio +ve"
-      s.matrix[12,1] <- "Likelihood Ratio -ve"
-      s.matrix[13,1] <- "logit(sensitivity)"
-      s.matrix[14,1] <- "logit(specificity)"
+      s.matrix[4,1] <- "False Negative Rate"
+      s.matrix[5,1] <- "Random Effects Correlation"
+      s.matrix[6,1] <- HTML("&theta;")
+      s.matrix[7,1] <- HTML("&lambda;")
+      s.matrix[8,1] <- HTML("&beta;")
+      s.matrix[9,1] <- HTML("&sigma;<sub>&theta;</sub>")
+      s.matrix[10,1] <- HTML("&sigma;<sub>&alpha;</sub>")
+      s.matrix[11,1] <- "Diagnostic Odds Ratio"
+      s.matrix[12,1] <- "Likelihood Ratio +ve"
+      s.matrix[13,1] <- "Likelihood Ratio -ve"
+      s.matrix[14,1] <- "logit(sensitivity)"
+      s.matrix[15,1] <- "logit(specificity)"
       s.matrix[1,2] <- sprintf('%4.3f', Z[3,1])
       s.matrix[2,2] <- sprintf('%4.3f', Z[4,1])
       s.matrix[3,2] <- sprintf('%4.3f', Z[5,1])
-      s.matrix[4,2] <- sprintf('%4.3f', Z[9,1])
+      s.matrix[4,2] <- sprintf('%4.3f', Z[6,1])
       s.matrix[5,2] <- sprintf('%4.3f', Z[10,1])
       s.matrix[6,2] <- sprintf('%4.3f', Z[11,1])
       s.matrix[7,2] <- sprintf('%4.3f', Z[12,1])
       s.matrix[8,2] <- sprintf('%4.3f', Z[13,1])
       s.matrix[9,2] <- sprintf('%4.3f', Z[14,1])
-      s.matrix[10,2] <- sprintf('%4.3f', Z[6,1])
+      s.matrix[10,2] <- sprintf('%4.3f', Z[15,1])
       s.matrix[11,2] <- sprintf('%4.3f', Z[7,1])
       s.matrix[12,2] <- sprintf('%4.3f', Z[8,1])
-      s.matrix[13,2] <- sprintf('%4.3f', Z[1,1])
-      s.matrix[14,2] <- sprintf('%4.3f', Z[2,1])
+      s.matrix[13,2] <- sprintf('%4.3f', Z[9,1])
+      s.matrix[14,2] <- sprintf('%4.3f', Z[1,1])
+      s.matrix[15,2] <- sprintf('%4.3f', Z[2,1])
       s.matrix[1,3] <- sprintf('%4.3f', Z[3,2])
       s.matrix[1,4] <- sprintf('%4.3f', Z[3,3])
       s.matrix[2,3] <- sprintf('%4.3f', Z[4,2])
       s.matrix[2,4] <- sprintf('%4.3f', Z[4,3])
       s.matrix[3,3] <- sprintf('%4.3f', Z[5,2])
       s.matrix[3,4] <- sprintf('%4.3f', Z[5,3])
-      s.matrix[4,3] <- ""
-      s.matrix[4,4] <- ""
-      s.matrix[10,3] <- sprintf('%4.3f', Z[6,2])
-      s.matrix[10,4] <- sprintf('%4.3f', Z[6,3])
+      s.matrix[4,3] <- sprintf('%4.3f', Z[6,2])
+      s.matrix[4,4] <- sprintf('%4.3f', Z[6,3])
+      s.matrix[5,3] <- ""
+      s.matrix[5,4] <- ""
       s.matrix[11,3] <- sprintf('%4.3f', Z[7,2])
       s.matrix[11,4] <- sprintf('%4.3f', Z[7,3])
       s.matrix[12,3] <- sprintf('%4.3f', Z[8,2])
       s.matrix[12,4] <- sprintf('%4.3f', Z[8,3])
-      s.matrix[5,3] <- ""
-      s.matrix[5,4] <- ""
+      s.matrix[13,3] <- sprintf('%4.3f', Z[9,2])
+      s.matrix[13,4] <- sprintf('%4.3f', Z[9,3])
       s.matrix[6,3] <- ""
       s.matrix[6,4] <- ""
       s.matrix[7,3] <- ""
@@ -2795,30 +2809,33 @@ SensitivityAnalysisPageServer <- function(id, data) {
       s.matrix[8,4] <- ""
       s.matrix[9,3] <- ""
       s.matrix[9,4] <- ""
-      s.matrix[13,3] <- sprintf('%4.3f', Z[1,2])
-      s.matrix[14,3] <- sprintf('%4.3f', Z[2,2])
-      s.matrix[13,4] <- sprintf('%4.3f', Z[1,3])
-      s.matrix[14,4] <- sprintf('%4.3f', Z[2,3])
-      s.matrix[15, 1:4] <- ""
+      s.matrix[10,3] <- ""
+      s.matrix[10,4] <- ""
+      s.matrix[14,3] <- sprintf('%4.3f', Z[1,2])
+      s.matrix[15,3] <- sprintf('%4.3f', Z[2,2])
+      s.matrix[14,4] <- sprintf('%4.3f', Z[1,3])
+      s.matrix[15,4] <- sprintf('%4.3f', Z[2,3])
+      s.matrix[16, 1:4] <- ""
       
       #Name the columns of the matrix
       colnames(s.matrix) <- c("Parameter", "Estimate", "2.5% CI", "97.5% CI")
       
       #Conditions to display which statistics are shown in the table
       #Start with a logical vector of false and replace ths with true if the corresponding box is ticked
-      statticks <- logical(length=15) # default is false
+      statticks <- logical(length=16) # default is false
       # always have the bottom empty row showing
-      statticks[15] <- TRUE
+      statticks[16] <- TRUE
       # which rows are displayed will depend on the options selected
       if ('1' %in% input$statscheck2) {statticks[1] <- T}
       if ('2' %in% input$statscheck2) {statticks[2] <- T}
       if ('3' %in% input$statscheck2) {statticks[3] <- T}
       if ('4' %in% input$statscheck2) {statticks[4] <- T}
-      if ('5' %in% input$statscheck2) {statticks[5:9] <- T}
-      if ('6' %in% input$statscheck2) {statticks[10] <- T}
-      if ('7' %in% input$statscheck2) {statticks[11:12] <- T}
-      if ('1' %in% input$statscheck2) {statticks[13] <- T}
-      if ('2' %in% input$statscheck2) {statticks[14] <- T}
+      if ('5' %in% input$statscheck2) {statticks[5] <- T}
+      if ('6' %in% input$statscheck2) {statticks[6:10] <- T}
+      if ('7' %in% input$statscheck2) {statticks[11] <- T}
+      if ('8' %in% input$statscheck2) {statticks[12:13] <- T}
+      if ('1' %in% input$statscheck2) {statticks[14] <- T}
+      if ('2' %in% input$statscheck2) {statticks[15] <- T}
       
       #Only the rows of s.matrix where statticks=T will be displayed
       s.matrix[statticks,]

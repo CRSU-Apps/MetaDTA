@@ -23,10 +23,12 @@ study_level_outcomes <- function(data = NULL, subset=NULL, formula = NULL,
   origdata$sens <- origdata$TP / (origdata$TP + origdata$FN)
   origdata$spec <- origdata$TN / (origdata$FP + origdata$TN)
   origdata$fpr <- 1- origdata$spec
+  origdata$fnr <- 1- origdata$sens
   
   study_level <- data.frame(TP=origdata$TP, FN=origdata$FN, FP=origdata$FP, TN=origdata$TN, 
                             N=(origdata$TP+origdata$FN+origdata$FP+origdata$TN), 
-                            Sensitivity=origdata$sens, Specificity=origdata$spec, FPR=origdata$fpr)
+                            Sensitivity=origdata$sens, Specificity=origdata$spec,
+                            FPR=origdata$fpr, FNR=origdata$fnr)
   
   return(study_level)
 }
