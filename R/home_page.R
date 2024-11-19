@@ -4,8 +4,11 @@
 #' @param id ID of the module
 #' @return Div for the home page
 HomePageUi <- function(id) {
+  
+  ns <- NS(id)
+  
   div(
-    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.4 (November 2024)"),
+    h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.5 (November 2024)"),
     br(),
     h4(
       "Version 2.0 is the version as described in the paper:",
@@ -73,7 +76,7 @@ HomePageUi <- function(id) {
     ),
     br(),
     p("Download a copy of the MetaDTA User Guide here:"),
-    downloadButton("downloadUG", "Download User Guide"),
+    downloadButton(ns("downloadUG"), "Download User Guide"),
     br(),
     br(),
     p("An interactive primer on diagnostic test accuracy can be found at:"),
@@ -85,10 +88,10 @@ HomePageUi <- function(id) {
     br(),
     br(),
     p(tags$b("Latest update:")),
+    p(tags$b("v2.1.5 - November 2024")),
+    p("Fixed user guide download."),
     p(tags$b("v2.1.4 - November 2024")),
     p("Added False Negative Rates."),
-    p(tags$b("v2.1.3 - August 2024")),
-    p("Fixed a bug which prevented the risk of bias piecharts from diplaying under the SROC plots."),
     p(tags$b("v2.1.2 - June 2024")),
     p("Added an error message when the model doesn't converge, and removed most of the output in this case."),
     p("In previous versions, on rare occasions the model may not have converged without any warning being displayed to the user."),
