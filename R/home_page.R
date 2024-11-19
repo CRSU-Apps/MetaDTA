@@ -4,6 +4,9 @@
 #' @param id ID of the module
 #' @return Div for the home page
 HomePageUi <- function(id) {
+  
+  ns <- NS(id)
+  
   div(
     h1("MetaDTA: Diagnostic Test Accuracy Meta-Analysis v2.1.4 (November 2024)"),
     br(),
@@ -73,7 +76,7 @@ HomePageUi <- function(id) {
     ),
     br(),
     p("Download a copy of the MetaDTA User Guide here:"),
-    downloadButton("downloadUG", "Download User Guide"),
+    downloadButton(ns("downloadUG"), "Download User Guide"),
     br(),
     br(),
     p("An interactive primer on diagnostic test accuracy can be found at:"),
